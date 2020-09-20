@@ -80,6 +80,7 @@
                                     <thead>
                                     <tr>
                                         <th>م</th>
+                                        <th>الكود</th>
                                         <th>الإسم</th>
                                         <th>النوع</th>
                                         <th> تمت الإضافة </th>
@@ -89,6 +90,7 @@
                                     <tfoot>
                                     <tr>
                                         <th>م</th>
+                                        <th>الكود</th>
                                         <th>الإسم</th>
                                         <th>النوع</th>
                                         <th> تمت الإضافة </th>
@@ -100,6 +102,7 @@
                                         @foreach($gates as $gate)
                                             <tr>
                                                 <td>{{$gate->id}}</td>
+                                                <td><img src="{{$gate->barcode}}"></td>
                                                 <td>{{$gate->name}}</td>
                                                 <td>{{$gate->gate_type->type_ar}}</td>
                                                 {{--<td>{{$group->created_by ? $group->createdBy->name : ''}}</td>--}}

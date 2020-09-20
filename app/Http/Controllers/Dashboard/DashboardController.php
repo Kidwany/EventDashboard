@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $events = Event::all()->where('organization_id', $organization_id)->count();
         $events_ids = DB::table('events')->where('organization_id', $organization_id)->pluck('id');
         $applicants = EventAttendRequest::all()->whereIn('event_id', $events_ids)->count();
-        $latest_events = Event::all()->where('organization_id', $organization_id);
+        $latest_events = Event::all()->where('organization_id', $organization_id)->where('status_id', 1);
         $groups = UserGroup::all()->whereIn('event_id', $events_ids)->count();
         $tasks = ServiceProviderTask::all()->where('organization_id', $organization_id)->count();
         // Get All Groups of this event

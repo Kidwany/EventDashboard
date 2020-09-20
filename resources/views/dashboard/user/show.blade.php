@@ -7,7 +7,109 @@
 @endsection
 
 @section('content')
+<link
+			href="https://fonts.googleapis.com/css2?family=Cairo&display=swap"
+			rel="stylesheet"
+		/>
+	<style>
+		.id-wrapper * {
+				box-sizing: border-box;
+				direction: rtl;
+			}
+		 
+			.id-wrapper {
+			
+				background-color: #f7f8fa;
+				border: 1px solid rgba(0, 0, 0, 0.1);
+				border-radius: 4px;
+				width: 360px;
+				height: 408px;
+				position: relative;
+				font-family: 'Cairo', sans-serif;
+				display: grid;
+				grid-template-rows: auto 1fr;
+			}
+			.card-title {
+				background-color: #fbe462;
+				color: #323232;
+				text-align: center;
+				padding: 10px 8px;
+				font-size: 20px;
+			}
+			.main-content {
+				display: grid;
+				/* padding: 12px; */
+			}
 
+			.profile-content {
+				display: grid;
+				grid-template-columns: auto 1fr;
+				grid-gap: 8px;
+				margin-top: 8px;
+				padding: 12px;
+			}
+
+			.profile-img img {
+				width: 160px;
+				height: 180px;
+				border-radius: 4px;
+				object-fit: cover;
+				object-position:  center;
+				background-color: #ddd;
+			}
+			.profile-data {
+				display: grid;
+				grid-gap: 18px;
+				padding: 8px 0;
+				margin-right: 4px;
+				text-align: right;
+			}
+
+			.tit {
+				font-size: 12px;
+				color: #464646;
+			}
+			.name,
+			.job,
+			.card-no {
+				display: grid;
+				line-height: 1;
+				grid-gap: 4px;
+				font-weight: bold;
+				color: #323232;
+			}
+
+			.span-no {
+				font-size: 20px;
+			}
+
+			.logo-qr {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				align-items: center;
+				justify-content: center;
+				border-radius: 0 0 4px 4px;
+				padding: 12px;
+				padding-top: 8px;
+			}
+
+			.logo-div img {
+				width: 100%;
+				height: auto;
+				border-right: 3px solid rgba(0, 0, 0, 0.2);
+				padding-right: 22px;
+			}
+			.qr-wrapper {
+				flex-basis: 50%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: space-evenly;
+			}
+			.qr-wrapper img {
+				width: 102px;
+			}
+		</style>
     <div class="body_scroll">
         <div class="block-header">
             <div class="row">
@@ -269,6 +371,52 @@
                             @endforeach
                         @endif
                     </div>
+                     <a target="_blank" href="{{adminUrl('printid/' . $user->id)}}" class="btn btn-success btn-icon float-right"><i class="zmdi zmdi-print"></i> Print</a>
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>البطاقه التعريفيه</strong> </h2>
+                        </div>
+                    </div>
+                    
+          
+		<div class="id-wrapper">
+			<div class="card-title">بطاقه تعريفيه</div>
+
+			<div class="main-content">
+				<div class="profile-content">
+					<div class="profile-img">
+						<img src="{{$user->image_id ? $user->image->url : assetPath('dashboard/assets/images/user.png')}}" alt="profile" />
+					</div>
+					<div class="profile-data">
+						<div class="name">
+							<span class="tit">الاســـم: </span>
+							<span>{{$user->fname . ' ' . $user->mname . ' ' . $user->lname}}</span>
+						</div>
+						<div class="job">
+							<span class="tit">الوظيفة: </span>
+							<span>@if($user->serviceProviderJobs->count())
+                                            @foreach($user->serviceProviderJobs as $job)
+                                                {{$job->job_ar}}
+                                            @endforeach
+                                        @endif</span>
+						</div>
+						<div class="card-no">
+							<span class="tit">الرقم : </span>
+							<span class="span-no">{{$user->id}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="logo-qr">
+					<div class="qr-wrapper">
+						<img src="{{$user->spqr}}" alt="qr code" />
+					</div>
+					<div class="logo-div">
+						<img src="https://www.admin.hemmtk.com/general/hemmtk.jpeg" alt="logo" alt="logo" />
+					</div>
+				</div>
+			</div>
+		</div>
+                         
                 </div>
             </div>
         </div>

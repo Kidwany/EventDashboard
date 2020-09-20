@@ -83,6 +83,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     /* Users Controller*/
     Route::resource('user', 'UserController');
     Route::get('print-user/{id}', 'UserController@printPdf');
+    Route::get('printid/{id}', 'UserController@printIdPdf');
 
 
     /* Notification Controller*/
