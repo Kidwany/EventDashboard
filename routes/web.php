@@ -33,6 +33,13 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('applicants/accept/{event_id}/{user_id}', 'ApplicantsController@acceptRequest');
     Route::get('applicants/reject/{event_id}/{user_id}', 'ApplicantsController@rejectRequest');
 
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::::  Organizers Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('organizers/{event_id}', 'OrganizersController@index');
+    Route::get('organizers/accept/{event_id}/{user_id}', 'ApplicantsController@acceptRequest');
+    Route::get('organizers/reject/{event_id}/{user_id}', 'OrganizersController@rejectRequest');
+
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*:::::::::::::::::::::::::::::::::  Groups Routes  ::::::::::::::::::::::::::*/

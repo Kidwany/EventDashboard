@@ -67,7 +67,7 @@
                                             <td class="hidden-md-down">
                                                 <ul class="list-unstyled team-info margin-0">
                                                     @foreach($task->members as $user)
-                                                        <li><img src="{{$user->image_id ? $user->image->url : 'https://www.api.hemmtk.com/general/documents/1599263288download.jpg'}}" alt="Avatar"></li>
+                                                        <li><img src="{{$user->image_id ? $user->image->url : 'https://www.api.hemmtk.com/general/documents/1599263288download.jpg'}}" alt="Avatar" title="{{$user->name}}"></li>
                                                     @endforeach
                                                 </ul>
                                             </td>

@@ -38,7 +38,10 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::with('city', 'category')->where('organization_id', Auth::user()->id)->orderByDesc('created_at')->get();
+        $events = Event::with('city', 'category')
+            ->where('organization_id', Auth::user()->id)
+            ->where('status_id', 1)
+            ->orderByDesc('created_at')->get();
         return view('dashboard.event.index', compact('events'));
     }
 
@@ -147,9 +150,14 @@ class EventController extends Controller
             ->where('event_id', $id)
             ->where('status_id', 3)
             ->count();
+        $organizers  = EventAttendRequest
+            ::with('user')
+            ->where('event_id', $id)
+            ->where('status_id', 5)
+            ->count();
         $groups = UserGroup::with('users')->where('event_id', $id)->count();
         $tasks = Task::with('users')->where('event_id', $id)->count();
-        return view('dashboard.event.show', compact('event', 'applications', 'groups', 'tasks'));
+        return view('dashboard.event.show', compact('event', 'applications', 'groups', 'tasks', 'organizers'));
     }
 
     /**

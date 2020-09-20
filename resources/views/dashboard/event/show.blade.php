@@ -40,7 +40,7 @@
                                 <li class="active"><a href="{{adminUrl('applicants/' . $event->id)}}"><i class="zmdi zmdi-inbox"></i>الطلبات<span class="badge badge-primary">{{$applications}}</span></a></li>
                                 <li><a href="{{adminUrl('groups/' . $event->id)}}"><i class="zmdi zmdi-group-work"></i>المجموعات</a></li>
                                 <li><a href="{{adminUrl('gates/' . $event->id)}}"><i class="zmdi zmdi-badge-check"></i>البوابات </a></li>
-                                {{--<li><a href="{{adminUrl('floors/' . $event->id)}}"><i class="zmdi zmdi-file"></i>الأدوار<span class="badge badge-info">{{$event->floors}}</span></a></li>--}}
+                                <li><a href="{{adminUrl('organizers/' . $event->id)}}"><i class="zmdi zmdi-accounts"></i>المنظمين<span class="badge badge-info">{{$organizers}}</span></a></li>
                                 {{--<li><a href="javascript:void(0);"><i class="zmdi zmdi-email"></i>الصلاحيات</a></li>
                                 <li><a href="javascript:void(0);"><i class="zmdi zmdi-alert-circle"></i>المشرفين</a></li>--}}
                                 <li><a href="{{adminUrl('tasks/' . $event->id)}}"><i class="zmdi zmdi-fire"></i>المهام<span class="badge badge-danger">{{$tasks}}</span></a></li>
