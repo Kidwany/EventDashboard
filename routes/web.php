@@ -51,7 +51,15 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::patch('groups/update/{id}', 'GroupsController@update');
     Route::get('groups/edit/{event_id}/{group_id}', 'GroupsController@edit');
     Route::delete('groups/delete/{group_id}', 'GroupsController@destroy');
-
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::  Gates Floors  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('floors/{event_id}', 'FloorsController@index');
+    Route::get('floors/create', 'FloorsController@create');
+    Route::post('floors/store', 'FloorsController@store');
+    Route::get('floors/{id}/edit', 'FloorsController@edit');
+    Route::patch('floors/{id}/update', 'FloorsController@update');
+    Route::delete('floors/{id}/delete', 'FloorsController@destroy');
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Gates Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
