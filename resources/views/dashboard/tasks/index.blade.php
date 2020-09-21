@@ -29,6 +29,8 @@
             </div>
         </div>
 
+        @include('dashboard.layouts.eventNav')
+
         <div class="container-fluid">
             <!-- Basic Examples -->
             <div class="row clearfix">
