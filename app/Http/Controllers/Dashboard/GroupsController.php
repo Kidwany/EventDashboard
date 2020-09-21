@@ -111,7 +111,7 @@ class GroupsController extends Controller
             foreach ($uploadedFiles as $uploadedFile):
                 $fileName=time(). $uploadedFile->getClientOriginalName();
                 $uploadedFile->move("uploads/groups", $fileName);
-                $filePath = "uploads/groups".$fileName;
+                $filePath = "uploads/groups/".$fileName;
                 $image = File::create(['name' => $fileName, 'path' => $filePath,'url'=>assetPath($filePath),'alt' =>"group attach", 'title' => $uploadedFile->getClientOriginalName()]);
                 $attach = new GroupAttaches();
                 $attach->user_group_id   = $group->id;

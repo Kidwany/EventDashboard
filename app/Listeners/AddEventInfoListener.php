@@ -39,7 +39,7 @@ class AddEventInfoListener
             foreach ($uploadedFiles as $uploadedFile):
                 $fileName=time(). $uploadedFile->getClientOriginalName();
                 $uploadedFile->move("uploads/events", $fileName);
-                $filePath = "uploads/events".$fileName;
+                $filePath = "uploads/events/".$fileName;
                 $image = Image::create(['name' => $fileName, 'path' => $filePath,'url'=>assetPath($filePath),'alt' =>"event image"]);
                 $attach = new EventImages();
                 $attach->image_id   = $image->id;

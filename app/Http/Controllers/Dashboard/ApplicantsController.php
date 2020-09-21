@@ -34,7 +34,9 @@ class ApplicantsController extends Controller
             ->where('role_id', 2)
             ->whereIn('id', $requests)
             ->get();
-        return view('dashboard.applicants.index', compact('users', 'event'));
+
+        //$applicants = EventAttendRequest::with('')
+        return view('dashboard.applicants.index', compact('users', 'event', 'requests'));
     }
 
     /**
