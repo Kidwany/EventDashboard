@@ -9,10 +9,6 @@
 @endsection
 
 @section('content')
-
-
-
-
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">

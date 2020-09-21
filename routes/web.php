@@ -51,7 +51,15 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::patch('groups/update/{id}', 'GroupsController@update');
     Route::get('groups/edit/{event_id}/{group_id}', 'GroupsController@edit');
     Route::delete('groups/delete/{group_id}', 'GroupsController@destroy');
-
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::  Gates Floors  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('floors/{event_id}', 'FloorsController@index');
+    Route::get('floors/create', 'FloorsController@create');
+    Route::post('floors/store', 'FloorsController@store');
+    Route::get('floors/{id}/edit', 'FloorsController@edit');
+    Route::patch('floors/{id}/update', 'FloorsController@update');
+    Route::delete('floors/{id}/delete', 'FloorsController@destroy');
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Gates Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -66,6 +74,18 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     /*::::::::::::::::::::::::::::::::::  Tasks Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('tasks/{event_id}', 'TasksController@index');
+    //Route::get('groups/{event_id}/{group_id}', 'GroupsController@show');
+    Route::get('tasks/{event_id}/create', 'TasksController@create');
+    Route::post('tasks/{event_id}/store', 'TasksController@store');
+    Route::patch('tasks/update/{id}', 'TasksController@update');
+    Route::get('tasks/edit/{event_id}/{group_id}', 'TasksController@edit');
+    Route::delete('tasks/delete/{group_id}', 'TasksController@destroy');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::::::::: Tracking   Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('tracking/{event_id}', 'TrackingController@index');
+    Route::get('tracking/{event_id}/map', 'TrackingController@map');
     //Route::get('groups/{event_id}/{group_id}', 'GroupsController@show');
     Route::get('tasks/{event_id}/create', 'TasksController@create');
     Route::post('tasks/{event_id}/store', 'TasksController@store');

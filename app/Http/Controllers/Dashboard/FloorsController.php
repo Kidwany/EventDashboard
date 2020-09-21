@@ -33,7 +33,7 @@ class FloorsController extends Controller
     {
         $event = Event::with('city')->findOrFail($event_id);
         $floors = EventFloors::all()->where('event_id', $event_id);
-        return view('dashboard.gates.index', compact('floors', 'event'));
+        return view('dashboard.floors.index', compact('floors', 'event'));
     }
 
 
