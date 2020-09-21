@@ -81,6 +81,18 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('tasks/edit/{event_id}/{group_id}', 'TasksController@edit');
     Route::delete('tasks/delete/{group_id}', 'TasksController@destroy');
 
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::::::::: Tracking   Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('tracking/{event_id}', 'TrackingController@index');
+    Route::get('tracking/{event_id}/map', 'TrackingController@map');
+    //Route::get('groups/{event_id}/{group_id}', 'GroupsController@show');
+    Route::get('tasks/{event_id}/create', 'TasksController@create');
+    Route::post('tasks/{event_id}/store', 'TasksController@store');
+    Route::patch('tasks/update/{id}', 'TasksController@update');
+    Route::get('tasks/edit/{event_id}/{group_id}', 'TasksController@edit');
+    Route::delete('tasks/delete/{group_id}', 'TasksController@destroy');
+
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*:::::::::::::::::::::::::::::::::::  Admins  :::::::::::::::::::::::::::::::*/

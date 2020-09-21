@@ -46,6 +46,7 @@
                                 {{--<li><a href="javascript:void(0);"><i class="zmdi zmdi-email"></i>الصلاحيات</a></li>
                                 <li><a href="javascript:void(0);"><i class="zmdi zmdi-alert-circle"></i>المشرفين</a></li>--}}
                                 <li><a href="{{adminUrl('tasks/' . $event->id)}}"><i class="zmdi zmdi-fire"></i>المهام<span class="badge badge-danger">{{$tasks}}</span></a></li>
+                                <li><a href="{{adminUrl('tracking/' . $event->id)}}"><i class="zmdi zmdi-fire"></i>التتبع</a></li>
                             </ul>
                         </div>
 
