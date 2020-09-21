@@ -49,7 +49,8 @@
             lng: eventLong};
         map = new google.maps.Map(document.getElementById("map"), {
             center: myLatLng,
-            zoom: 17
+            zoom: 17,
+            mapTypeId: 'satellite'
         });
 
 
@@ -109,7 +110,11 @@
                             lng:subvalue['lang']
                         },
                         title: key,
-                        label: key,
+                        label: {
+                            color: subvalue['color'],
+                            fontWeight: 'bold',
+                            text: subvalue['name'],
+                        },
                         icon: {
                             path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
                             strokeColor: subvalue['color'],
