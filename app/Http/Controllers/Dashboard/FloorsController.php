@@ -44,9 +44,7 @@ class FloorsController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'event_id'       => 'required',
-            'gate_type_id'   => 'required',
-            'gate_name'      => 'required',
+            'no'       => 'required|numeric',
         ], [], []);
 
         if ($v->fails())
@@ -54,15 +52,14 @@ class FloorsController extends Controller
             return redirect()->back()->with('errors', $v->errors())->withInput();
         }
 
-        $gate = new EventGates();
-        $gate->type_id = $request->gate_type_id;
-        $gate->name = $request->gate_name;
-        $gate->event_id = $request->event_id;
-        $gate->save();
+        $floor = new EventFloors();
+        $floor->floor_no = $request->no;
+        $floor->event_id = $request->event_id;
+        $floor->save();
 
-        EventGates::where('id',$gate->id)->update(['barcode'=>GenerateQr::generateQrCode(4,"hemmtk-4,".$gate->event_id.",".$gate->id)]);
+        EventFloors::where('id',$floor->id)->update(['barcode'=>GenerateQr::generateQrCode(3,"hemmtk-4,".$floor->event_id.",".$floor->id)]);
 
-        return redirect()->back()->with('create', 'تم اضافة البوابة بنجاح');
+        return redirect()->back()->with('create', 'تم اضافة الطابق بنجاح');
     }
 
     /**
@@ -71,9 +68,8 @@ class FloorsController extends Controller
      */
     public function edit($id)
     {
-        $event_gate = EventGates::findOrFail($id);
-        $gates_types = GateType::all();
-        return view('dashboard.gates.edit', compact('event_gate', 'gates_types'));
+        $floor = EventFloors::findOrFail($id);
+        return view('dashboard.floors.edit', compact('floor'));
     }
 
 
@@ -84,11 +80,9 @@ class FloorsController extends Controller
      */
     public function update($id, Request $request)
     {
-        $gate = EventGates::findOrFail($id);
+        $floor = EventFloors::findOrFail($id);
         $v = Validator::make($request->all(), [
-            'event_id'       => 'required',
-            'gate_type_id'   => 'required',
-            'gate_name'      => 'required',
+            'no'       => 'required|numeric',
         ], [], []);
 
         if ($v->fails())
@@ -96,12 +90,12 @@ class FloorsController extends Controller
             return redirect()->back()->with('errors', $v->errors())->withInput();
         }
 
-        $gate->type_id = $request->gate_type_id;
-        $gate->name = $request->gate_name;
-        $gate->event_id = $request->event_id;
-        $gate->save();
+        $floor->floor_no = $request->no;
+        $floor->save();
 
-        return redirect('gates/' . $gate->event_id)->with('create', 'تم تعديل البوابة بنجاح');
+        EventFloors::where('id',$floor->id)->update(['barcode'=>GenerateQr::generateQrCode(3,"hemmtk-4,".$floor->event_id.",".$floor->id)]);
+
+        return redirect('floors/' . $floor->event_id)->with('create', 'تم تعديل الطابق بنجاح');
     }
 
 
@@ -111,13 +105,13 @@ class FloorsController extends Controller
      */
     public function destroy($id)
     {
-        $gate = EventGates::findOrFail($id);
+        $floor = EventFloors::findOrFail($id);
         DB::beginTransaction();
         try{
-            $gate->delete();
+            $floor->delete();
 
             DB::commit();
-            return redirect()->back()->with('create', 'تم مسح البوابة بنجاح');
+            return redirect()->back()->with('create', 'تم مسح الطابق بنجاح');
 
         }catch (\Exception $exception)
         {

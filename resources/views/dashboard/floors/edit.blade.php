@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.layouts')
-@section('title', 'البوابات')
+@section('title', 'الأدوار')
 @section('customizedStyle')
     <style>
         .colors ul{list-style:none; padding:0; margin: 0;}
@@ -44,12 +44,12 @@
     <div class="body_scroll">
         <div class="block-header">
             <div class="row">
-                <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>البوابات </h2>
+                <div class="col-lg-12 col-md-6 col-sm-12">
+                    <h2>الأدوار </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{adminUrl('/')}}"><i class="zmdi zmdi-home"></i> همتك </a></li>
-                        <li class="breadcrumb-item"><a href="{{adminUrl('gates/' . $event_gate->event_id)}}">البوابات </a></li>
-                        <li class="breadcrumb-item active"> بوابة جديدة </li>
+                        <li class="breadcrumb-item"><a href="{{adminUrl('gates/' . $floor->event_id)}}">الأدوار </a></li>
+                        <li class="breadcrumb-item active"> دور جديد </li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
                 </div>
@@ -62,40 +62,30 @@
         <div class="container-fluid">
             @include('dashboard.layouts.messages')
             <!-- Vertical Layout -->
-                <form action="{{url('gates/'. $event_gate->id .'/update')}}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    @method('patch')
-                    <input type="hidden" name="event_id" value="{{$event_gate->event_id}}">
-                    <div class="card">
-                        @include('dashboard.layouts.messages')
-                        <div class="header">
-                            <h2><strong>تعديل البوابة</strong></h2>
-                        </div>
-                        <section id="gates">
-                            <div class="body">
-                                <div class="row" >
-                                    <div class="col-lg-6 col-md-6">
-                                        <label> النوع</label>
-                                        <select name="gate_type_id" class="form-control show-tick ms select2"  data-placeholder="اختر الخدمات التي تقدمها المغسلة">
-                                            @if($gates_types)
-                                                @foreach($gates_types as $gate)
-                                                    <option value="{{$gate->id}}" {{$event_gate->type_id == $gate->id ? 'selected' : ''}}>{{$gate->type_ar}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12 col-sm-3">
-                                        <label for="email_address">اسم البوابة</label>
-                                        <div class="form-group d-flex justify-content-between">
-                                            <input type="text" value="{{$event_gate->name}}" name="gate_name" id="email_address" class="form-control" placeholder="ادخل اسم البوابة">
-                                        </div>
+            <form action="{{url('floors/'. $floor->id .'/update')}}" method="post" enctype="multipart/form-data">
+                @csrf
+                @method('patch')
+                <input type="hidden" name="event_id" value="{{$floor->event_id}}">
+                <div class="card">
+                    @include('dashboard.layouts.messages')
+                    <div class="header">
+                        <h2><strong>تعديل الدور</strong></h2>
+                    </div>
+                    <section id="gates">
+                        <div class="body">
+                            <div class="row" >
+                                <div class="col-lg-6 col-md-12 col-sm-3">
+                                    <label for="email_address">رقم الدور</label>
+                                    <div class="form-group d-flex justify-content-between">
+                                        <input type="text" value="{{$floor->floor_no}}" name="no" id="email_address" class="form-control" placeholder="ادخل اسم الدور">
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">حفظ</button>
                             </div>
-                        </section>
-                    </div>
-                </form>
+                            <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">حفظ</button>
+                        </div>
+                    </section>
+                </div>
+            </form>
         </div>
     </div>
 
