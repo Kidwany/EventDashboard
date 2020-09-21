@@ -66,24 +66,24 @@
                                     </tr>
                                     </tfoot>
                                     <tbody>
-                                    @if($users)
-                                        @foreach($users as $user)
+                                    @if($applicants)
+                                        @foreach($applicants as $applicant)
                                             <tr>
-                                                <td>{{$user->id}}</td>
-                                                <td>{{$user->name}}</td>
-                                                <td>{{$user->email}}</td>
-                                                <td>{{$user->phone}}</td>
-                                                <td>{{$user->city->city_ar->title}}</td>
+                                                <td>{{$applicant->user->id}}</td>
+                                                <td>{{$applicant->user->name}}</td>
+                                                <td>{{$applicant->user->email}}</td>
+                                                <td>{{$applicant->user->phone}}</td>
+                                                <td>{{$applicant->user->city->city_ar->title}}</td>
                                                 <td>
-                                                    <span class="badge badge-{{$user->email_verified_at ? 'success' : 'success'}}">
-                                                        {{$user->email_verified_at ? 'نشط' : 'نشط'}}
+                                                    <span class="badge badge-{{$applicant->user->email_verified_at ? 'success' : 'success'}}">
+                                                        {{$applicant->user->email_verified_at ? 'نشط' : 'نشط'}}
                                                     </span>
                                                 </td>
-                                                <td>{{$user->created_at->diffForHumans()}}</td>
+                                                <td>{{$applicant->user->created_at->diffForHumans()}}</td>
                                                 <td style="display: flex">
-                                                    <a target="_blank" href="{{adminUrl('user/' . $user->id)}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
-                                                    <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$user->id}}" data-color="red"><i class="zmdi zmdi-block"></i> </a>
-                                                    <a href="#" class="btn bg-success waves-effect btn-sm" data-toggle="modal" data-target="#accept{{$user->id}}" data-color="green"><i class="zmdi zmdi-check"></i> </a>
+                                                    <a target="_blank" href="{{adminUrl('user/' . $applicant->user->id)}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
+                                                    <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$applicant->id}}" data-color="red"><i class="zmdi zmdi-block"></i> </a>
+                                                    <a href="#" class="btn bg-success waves-effect btn-sm" data-toggle="modal" data-target="#accept{{$applicant->id}}" data-color="green"><i class="zmdi zmdi-check"></i> </a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -98,21 +98,21 @@
         </div>
     </div>
 
-    @if($users)
-        @foreach($users as $user)
-            <div class="modal fade" id="delete{{$user->id}}" tabindex="-1" role="dialog">
+    @if($applicants)
+        @foreach($applicants as $applicant)
+            <div class="modal fade" id="delete{{$applicant->id}}" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content bg-red">
                         <div class="modal-header">
                             <h4 class="title" id="defaultModalLabel">رفض الطلب</h4>
                         </div>
-                        <div class="modal-body text-light" style="text-align: right"> هل انت متأكد من انك تريد رفض طلب المستخدم <strong> {{$user->name}} </strong></div>
-                        <form id="deleteUser{{$user->id}}" style="display: none" action="{{url('applicants/reject/' . $event->id . '/' . $user->id )}}" method="get">
+                        <div class="modal-body text-light" style="text-align: right"> هل انت متأكد من انك تريد رفض طلب المستخدم <strong> {{$applicant->user->name}} </strong></div>
+                        <form id="deleteUser{{$applicant->id}}" style="display: none" action="{{url('applicants/reject/' . $applicant->id )}}" method="get">
                             @csrf
                             @method('get')
                         </form>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-link waves-effect text-light" form="deleteUser{{$user->id}}">حذف</button>
+                            <button type="submit" class="btn btn-link waves-effect text-light" form="deleteUser{{$applicant->id}}">حذف</button>
                             <button type="button" class="btn btn-link waves-effect text-light" data-dismiss="modal">الغاء</button>
                         </div>
                     </div>
@@ -121,21 +121,21 @@
         @endforeach
     @endif
 
-    @if($users)
-        @foreach($users as $user)
-            <div class="modal fade" id="accept{{$user->id}}" tabindex="-1" role="dialog">
+    @if($applicants)
+        @foreach($applicants as $applicant)
+            <div class="modal fade" id="accept{{$applicant->id}}" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content bg-green">
                         <div class="modal-header">
                             <h4 class="title" id="defaultModalLabel">قبول الطلب</h4>
                         </div>
-                        <div class="modal-body text-light" style="text-align: right"> هل انت متأكد من انك تريد قبول طلب المستخدم للإنضمام<strong> {{$user->name}} </strong></div>
-                        <form id="acceptApplication{{$user->id}}" style="display: none" action="{{url('applicants/accept/' . $event->id . '/' . $user->id )}}" method="post">
+                        <div class="modal-body text-light" style="text-align: right"> هل انت متأكد من انك تريد قبول طلب المستخدم للإنضمام<strong> {{$applicant->user->name}} </strong></div>
+                        <form id="acceptApplication{{$applicant->id}}" style="display: none" action="{{url('applicants/accept/' . $applicant->id )}}" method="post">
                             @csrf
                             @method('get')
                         </form>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-link waves-effect text-light" form="acceptApplication{{$user->id}}">قبول</button>
+                            <button type="submit" class="btn btn-link waves-effect text-light" form="acceptApplication{{$applicant->id}}">قبول</button>
                             <button type="button" class="btn btn-link waves-effect text-light" data-dismiss="modal">الغاء</button>
                         </div>
                     </div>

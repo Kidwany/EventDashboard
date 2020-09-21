@@ -35,8 +35,13 @@ class ApplicantsController extends Controller
             ->whereIn('id', $requests)
             ->get();
 
-        //$applicants = EventAttendRequest::with('')
-        return view('dashboard.applicants.index', compact('users', 'event', 'requests'));
+        $applicants = EventAttendRequest::with('user')
+            ->where('status_id', 3)
+            ->where('event_id', $event_id)
+            ->whereIn('user_id', $requests)
+            ->get();
+
+        return view('dashboard.applicants.index', compact('users', 'event', 'applicants'));
     }
 
     /**
@@ -57,14 +62,11 @@ class ApplicantsController extends Controller
         return view('dashboard.applicants.show', compact('user', 'events', 'total_user_events', 'sp_experience', 'sp_doc', 'requests', 'user_payment'));
     }
 
-    public function acceptRequest($event_id, $user_id)
+    public function acceptRequest($id)
     {
         try
         {
-            $eventAttendRequest = EventAttendRequest
-                ::where('event_id', $event_id)
-                ->where('user_id', $user_id)
-                ->firstOrFail() ;
+            $eventAttendRequest = EventAttendRequest::findOrFail($id);
             $eventAttendRequest->status_id  = 5;
             $eventAttendRequest->save();
             DB::commit();
@@ -77,16 +79,12 @@ class ApplicantsController extends Controller
         }
     }
 
-    public function rejectRequest($event_id, $user_id)
+    public function rejectRequest($id)
     {
         try
         {
-            $eventAttendRequest = EventAttendRequest
-                ::where('event_id', $event_id)
-                ->where('user_id', $user_id)
-                ->firstOrFail() ;
-            $eventAttendRequest->status_id  = 9;
-            $eventAttendRequest->save();
+            $eventAttendRequest = EventAttendRequest::findOrFail($id);
+            $eventAttendRequest->delete();
             DB::commit();
 
             return redirect()->back()->with('create', 'تم رفض الطلب بنجاح');

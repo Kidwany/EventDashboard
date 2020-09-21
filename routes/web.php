@@ -30,8 +30,8 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     /*:::::::::::::::::::::::::::::  Applicants Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('applicants/{event_id}', 'ApplicantsController@index');
-    Route::get('applicants/accept/{event_id}/{user_id}', 'ApplicantsController@acceptRequest');
-    Route::get('applicants/reject/{event_id}/{user_id}', 'ApplicantsController@rejectRequest');
+    Route::get('applicants/accept/{id}', 'ApplicantsController@acceptRequest');
+    Route::get('applicants/reject/{id}', 'ApplicantsController@rejectRequest');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*:::::::::::::::::::::::::::::  Organizers Routes  ::::::::::::::::::::::::::*/

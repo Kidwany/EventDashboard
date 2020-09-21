@@ -40,7 +40,6 @@ class EventController extends Controller
     {
         $events = Event::with('city', 'category')
             ->where('organization_id', Auth::user()->id)
-            ->where('status_id', 1)
             ->orderByDesc('created_at')->get();
         return view('dashboard.event.index', compact('events'));
     }
