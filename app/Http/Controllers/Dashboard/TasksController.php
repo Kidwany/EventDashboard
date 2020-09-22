@@ -17,7 +17,11 @@ use App\Models\UserPaymentInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Kreait\Firebase;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 
 class TasksController extends Controller
 {
@@ -90,6 +94,26 @@ class TasksController extends Controller
         }
 
         $task->members()->sync($members);
+
+        $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/hemmtk-firebase-adminsdk-gufet-035d61ef62.json');
+        $firebase = (new Factory)
+            ->withServiceAccount($serviceAccount)
+            ->withDatabaseUri('https://hemmtk.firebaseio.com')
+            ->create();
+        $database = $firebase->getDatabase();
+        if(!empty($members)){
+        foreach ($members as $member){
+             $database
+                ->getReference('Notifications/'.$member)
+                ->push([
+                    'body' => 'لديك مهمه جديده من فاعليه '.$event->title ,
+                    'createdDate' => time().now(+20),
+                    'icon'=>URL::to('/dashboard/assets/images/icon/tasks.bd1b6b37.svg'),
+                    'is_read'=>'false',
+                    'type'=>'task',
+                ]);
+        }
+        }
 
         return redirect('tasks/' . $request->event_id)->with('create', 'تم اضافة المهمة بنجاح');
     }
