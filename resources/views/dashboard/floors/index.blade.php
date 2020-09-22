@@ -98,6 +98,7 @@
                                                 <td style="display: flex">
                                                     <a href="{{adminUrl('floors/' . $floor->id . '/edit')}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-edit"></i> </a>
                                                     <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$floor->id}}" data-color="red"><i class="zmdi zmdi-delete"></i> </a>
+                                                    <a target="_blank" href="{{adminUrl('floors/'. $floor->id . '/print')}}" class="btn btn-success"><i class="zmdi zmdi-print"></i> </a>
                                                 </td>
                                             </tr>
                                         @endforeach

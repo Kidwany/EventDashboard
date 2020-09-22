@@ -98,6 +98,7 @@
                                                 <td style="display: flex">
                                                     <a href="{{adminUrl('tools/' . $tool->id . '/edit')}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-edit"></i> </a>
                                                     <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$tool->id}}" data-color="red"><i class="zmdi zmdi-delete"></i> </a>
+                                                    <a target="_blank" href="{{adminUrl('tools/'. $tool->id . '/print')}}" class="btn btn-success"><i class="zmdi zmdi-print"></i> </a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -295,4 +295,11 @@ class EventController extends Controller
         $user_payment = UserPaymentInfo::where('user_id', $id)->firstOrFail();
         return view('printUser', compact('user', 'events', 'total_user_events', 'sp_experience', 'sp_doc', 'requests', 'user_payment'));
     }
+
+
+    public function printQr($id)
+    {
+        $event =  Event::with('city')->findOrFail($id);
+        return view('printEventQR', compact('event'));
+    }
 }

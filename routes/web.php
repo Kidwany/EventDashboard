@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
 
     Route::resource('product', 'ProductController');
     Route::resource('event', 'EventController');
+    Route::get('event/{id}/print', 'EventController@printQr');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*:::::::::::::::::::::::::::::  Applicants Routes  ::::::::::::::::::::::::::*/
@@ -53,7 +54,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::delete('groups/delete/{group_id}', 'GroupsController@destroy');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::::::::::::::::::::::::::::::::::  Gates Floors  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::  Event Floors  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('floors/{event_id}', 'FloorsController@index');
     Route::get('floors/create', 'FloorsController@create');
@@ -61,6 +62,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('floors/{id}/edit', 'FloorsController@edit');
     Route::patch('floors/{id}/update', 'FloorsController@update');
     Route::delete('floors/{id}/delete', 'FloorsController@destroy');
+    Route::get('floors/{id}/print', 'FloorsController@printQr');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Tools Routes  ::::::::::::::::::::::::::*/
@@ -71,9 +73,10 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('tools/{id}/edit', 'ToolsController@edit');
     Route::patch('tools/{id}/update', 'ToolsController@update');
     Route::delete('tools/{id}/delete', 'ToolsController@destroy');
+    Route::get('tools/{id}/print', 'ToolsController@printQr');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::::::::::::::::::::::::::::::::::  Tools Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::  Gates Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('gates/{event_id}', 'GatesController@index');
     Route::get('gates/create', 'GatesController@create');
@@ -81,6 +84,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('gates/{id}/edit', 'GatesController@edit');
     Route::patch('gates/{id}/update', 'GatesController@update');
     Route::delete('gates/{id}/delete', 'GatesController@destroy');
+    Route::get('gates/{id}/print', 'GatesController@printQr');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Tasks Routes  ::::::::::::::::::::::::::*/
@@ -94,7 +98,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::delete('tasks/delete/{group_id}', 'TasksController@destroy');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*:::::::::::::::::::::::::::::::::: Tracking   Routes  ::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::::::: Tracking Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('tracking/{event_id}', 'TrackingController@index');
     Route::get('tracking/{event_id}/map', 'TrackingController@map');

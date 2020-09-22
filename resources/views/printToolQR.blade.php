@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>ID-{{$user->name}}</title>
+    <title>ID-{{$tool->name}}</title>
 
     <link rel="stylesheet" href="{{assetPath('dashboard/assets/plugins/bootstrap/css/bootstrap.min.css')}}">
     <!-- Colorpicker Css -->
@@ -23,74 +23,74 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="{{assetPath('dashboard/assets/plugins/bootstrap-select/css/bootstrap-select.css')}}"/>
     <link rel="stylesheet" href="{{assetPath('dashboard/assets/css/style.min.css')}}">
-<style>
-			* {
-				box-sizing: border-box;
-			}
-			.id-wrapper {
-				direction: rtl;
-				background-color: #f7f8fa;
-				border: 1px solid rgba(0, 0, 0, 0.1);
-				border-radius: 4px;
-				width: 500px;
-				height: 320px;
-				position: relative;
-			}
-			.logo-div {
-				display: flex;
-				justify-content: center;
-				background-color: #fff;
-				padding: 12px;
-				border-radius: 4px 4px 0 0;
-				/* position: absolute;
-				left: 44%;
-				top: 8px;
-				transform: translateX(-50%); */
-			}
-			.logo-div img {
-				height: 42px;
-			}
-			.main-content {
-				display: flex;
-				padding: 12px;
-			}
-			.profile-content {
-				flex-basis: 50%;
-			}
-			.qr-wrapper {
-				flex-basis: 50%;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: space-evenly;
-			}
-			.qr-wrapper img {
-				height: 160px;
-			}
-			.profile-content {
-				text-align: center;
-			}
-			.profile-img {
-				display: flex;
-				justify-content: center;
-			}
-			.profile-img img {
-				width: 160px;
-				height: 160px;
-				object-fit: fill;
-				object-position: top center;
-				border-radius: 50%;
-				background-color: #ddd;
-			}
-			.name {
-				margin: 12px 8px;
-				margin-bottom: 6px;
-				font-size: 20px;
-			}
-			.job {
-				font-size: 18px;
-			}
-		</style>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        .id-wrapper {
+            direction: rtl;
+            background-color: #f7f8fa;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            width: 500px;
+            height: auto;
+            position: relative;
+        }
+        .logo-div {
+            display: flex;
+            justify-content: center;
+            background-color: #fff;
+            padding: 12px;
+            border-radius: 4px 4px 0 0;
+            /* position: absolute;
+            left: 44%;
+            top: 8px;
+            transform: translateX(-50%); */
+        }
+        .logo-div img {
+            height: 42px;
+        }
+        .main-content {
+            display: flex;
+            padding: 12px;
+        }
+        .profile-content {
+            flex-basis: 50%;
+        }
+        .qr-wrapper {
+            flex-basis: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+        .qr-wrapper img {
+            height: 160px;
+        }
+        .profile-content {
+            text-align: center;
+        }
+        .profile-img {
+            display: flex;
+            justify-content: center;
+        }
+        .profile-img img {
+            width: 160px;
+            height: 160px;
+            object-fit: fill;
+            object-position: top center;
+            border-radius: 50%;
+            background-color: #ddd;
+        }
+        .name {
+            margin: 12px 8px;
+            margin-bottom: 6px;
+            font-size: 20px;
+        }
+        .job {
+            font-size: 18px;
+        }
+    </style>
     <style>
         .card .body
         {
@@ -130,30 +130,28 @@
                 <div class="container-fluid elm" id="print">
                     <div class="row clearfix">
                         <div class="col-lg-6 col-md-8">
-                            
+
                             <div class="id-wrapper">
                                 <div class="logo-div">
                                     <img src="https://www.admin.hemmtk.com/general/hemmtk.jpeg" alt="logo" />
                                 </div>
                                 <div class="main-content">
                                     <div class="profile-content">
-                                        <div class="profile-img">
-                                            <img src="{{$user->image_id ? $user->image->url : assetPath('dashboard/assets/images/user.png')}}" alt="profile" />
+                                        {{--<div class="profile-img">
+                                            <img src="{{assetPath('general/hemmtk.jpeg')}}" alt="profile" />
+                                        </div>--}}
+                                        <div class="name"> {{$tool->name}}  </div>
+                                        <div class="job">
+                                            {{--{{$gate->gate_type->type_ar}}--}}
                                         </div>
-                                        <div class="name">{{$user->fname . ' ' . $user->mname . ' ' . $user->lname}}  </div>
-                                        <div class="job">@if($user->serviceProviderJobs->count())
-                                                @foreach($user->serviceProviderJobs as $job)
-                                                    {{$job->job_ar}}
-                                                @endforeach
-                                            @endif</div>
                                     </div>
                                     <div class="qr-wrapper">
-                                        <img src="{{$user->spqr}}" alt="qr code" />
+                                        <img src="{{$tool->barcode}}" alt="qr code" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                      
+
                     </div>
                 </div>
             </div>

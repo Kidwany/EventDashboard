@@ -127,4 +127,10 @@ class GatesController extends Controller
             return $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
         }
     }
+
+    public function printQr($id)
+    {
+        $gate =  EventGates::findOrFail($id);
+        return view('printGateQR', compact('gate'));
+    }
 }
