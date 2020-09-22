@@ -137,9 +137,9 @@
                                 </div>
                                 <div class="main-content">
                                     <div class="profile-content">
-                                        <div class="profile-img">
+                                        {{--<div class="profile-img">
                                             <img src="{{assetPath('general/hemmtk.jpeg')}}" alt="profile" />
-                                        </div>
+                                        </div>--}}
                                         <div class="name"> {{$gate->name}}  </div>
                                         <div class="job">
                                             {{$gate->gate_type->type_ar}}
