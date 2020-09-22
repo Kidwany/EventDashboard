@@ -11,6 +11,7 @@ use App\Models\ServiceProviderExperience;
 use App\Models\User;
 use App\Models\UserDocuments;
 use App\Models\UserPaymentInfo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -86,7 +87,7 @@ class ApplicantsController extends Controller
                         ->getReference('Notifications/'.$eventAttendRequest->user_id)
                         ->push([
                             'body' => 'تم قبول طلبك للانضمام لفاعليه '.$evenTitle->title ,
-                            'createdDate' => time().now(+20),
+                            'createdDate' => Carbon::now(),
                             'icon'=>URL::to('/dashboard/assets/images/icon/applications.f8d0d384.svg'),
                             'is_read'=>'false',
                             'type'=>'application',
@@ -121,7 +122,7 @@ class ApplicantsController extends Controller
                     ->getReference('Notifications/'.$eventAttendRequest->user_id)
                     ->push([
                         'body' => 'لقد تم رفض طلبك للانضمام لفاعليه '.$evenTitle->title ,
-                        'createdDate' => time().now(+20),
+                        'createdDate' => Carbon::now(),
                         'icon'=>URL::to('/dashboard/assets/images/icon/applications.f8d0d384.svg'),
                         'is_read'=>'false',
                         'type'=>'application',

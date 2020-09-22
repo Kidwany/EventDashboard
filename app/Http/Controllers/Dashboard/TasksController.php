@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\UserDocuments;
 use App\Models\UserGroup;
 use App\Models\UserPaymentInfo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -107,7 +108,7 @@ class TasksController extends Controller
                 ->getReference('Notifications/'.$member)
                 ->push([
                     'body' => 'لديك مهمه جديده من فاعليه '.$event->title ,
-                    'createdDate' => time().now(+20),
+                    'createdDate' => Carbon::now(),
                     'icon'=>URL::to('/dashboard/assets/images/icon/tasks.bd1b6b37.svg'),
                     'is_read'=>'false',
                     'type'=>'task',

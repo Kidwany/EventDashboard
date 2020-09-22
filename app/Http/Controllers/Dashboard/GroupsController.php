@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\UserDocuments;
 use App\Models\UserGroup;
 use App\Models\UserPaymentInfo;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -121,7 +122,7 @@ class GroupsController extends Controller
                     ->getReference('Notifications/'.$member)
                     ->push([
                         'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
-                        'createdDate' => time().now(+20),
+                        'createdDate' => Carbon::now(),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
                         'type'=>'group',
@@ -153,7 +154,7 @@ class GroupsController extends Controller
                     ->getReference('Notifications/'.$manager)
                     ->push([
                         'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
-                        'createdDate' => time().now(+20),
+                        'createdDate' => Carbon::now(),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
                         'type'=>'group',
@@ -265,7 +266,7 @@ class GroupsController extends Controller
                     ->getReference('Notifications/'.$member)
                     ->push([
                         'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
-                        'createdDate' => time().now(+20),
+                        'createdDate' => Carbon::now(),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
                         'type'=>'group',
@@ -297,7 +298,7 @@ class GroupsController extends Controller
                     ->getReference('Notifications/'.$manager)
                     ->push([
                         'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
-                        'createdDate' => time().now(+20),
+                        'createdDate' => Carbon::now(),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
                         'type'=>'group',
