@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +17,13 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
-});
 
+});
+Route::get('dev', function () {
+
+    $evenTitle=Event::where('id',65)->select('title')->firstOrFail();
+   return $evenTitle->title;
+});
 Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
 {
 

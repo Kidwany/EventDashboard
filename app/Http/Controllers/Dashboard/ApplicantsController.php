@@ -13,6 +13,9 @@ use App\Models\UserDocuments;
 use App\Models\UserPaymentInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 
 class ApplicantsController extends Controller
 {
@@ -70,6 +73,25 @@ class ApplicantsController extends Controller
             $eventAttendRequest->status_id  = 5;
             $eventAttendRequest->save();
             DB::commit();
+            $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/hemmtk-firebase-adminsdk-gufet-035d61ef62.json');
+            $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://hemmtk.firebaseio.com')
+                ->create();
+            $database = $firebase->getDatabase();
+            $evenTitle=Event::where('id',$eventAttendRequest->event_id)->select('title')->firstOrFail();
+            if(!empty($eventAttendRequest)){
+
+                    $database
+                        ->getReference('Notifications/'.$eventAttendRequest->user_id)
+                        ->push([
+                            'body' => 'تم قبول طلبك للانضمام لفاعليه '.$evenTitle->title ,
+                            'createdDate' => time().now(+20),
+                            'icon'=>URL::to('/dashboard/assets/images/icon/applications.f8d0d384.svg'),
+                            'is_read'=>'false',
+                            'type'=>'application',
+                        ]);
+                }
 
             return redirect()->back()->with('create', 'تم قبول الطلب بنجاح');
         }
@@ -86,7 +108,25 @@ class ApplicantsController extends Controller
             $eventAttendRequest = EventAttendRequest::findOrFail($id);
             $eventAttendRequest->delete();
             DB::commit();
+            $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/hemmtk-firebase-adminsdk-gufet-035d61ef62.json');
+            $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://hemmtk.firebaseio.com')
+                ->create();
+            $database = $firebase->getDatabase();
+            $evenTitle=Event::where('id',$eventAttendRequest->event_id)->select('title')->firstOrFail();
+            if(!empty($eventAttendRequest)){
 
+                $database
+                    ->getReference('Notifications/'.$eventAttendRequest->user_id)
+                    ->push([
+                        'body' => 'لقد تم رفض طلبك للانضمام لفاعليه '.$evenTitle->title ,
+                        'createdDate' => time().now(+20),
+                        'icon'=>URL::to('/dashboard/assets/images/icon/applications.f8d0d384.svg'),
+                        'is_read'=>'false',
+                        'type'=>'application',
+                    ]);
+            }
             return redirect()->back()->with('create', 'تم رفض الطلب بنجاح');
         }
         catch (\Exception $exception){

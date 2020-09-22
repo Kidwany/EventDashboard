@@ -20,7 +20,10 @@ use App\Models\UserPaymentInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 
 class GroupsController extends Controller
 {
@@ -104,7 +107,27 @@ class GroupsController extends Controller
         }
 
         $group->users()->sync($members);
+        $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/hemmtk-firebase-adminsdk-gufet-035d61ef62.json');
+        $firebase = (new Factory)
+            ->withServiceAccount($serviceAccount)
+            ->withDatabaseUri('https://hemmtk.firebaseio.com')
+            ->create();
+        $database = $firebase->getDatabase();
+        $evenTitle=Event::where('id',$request->event_id)->select('title')->firstOrFail();
 
+        if(!empty($members)){
+            foreach ($members as $member){
+                $database
+                    ->getReference('Notifications/'.$member)
+                    ->push([
+                        'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'createdDate' => time().now(+20),
+                        'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
+                        'is_read'=>'false',
+                        'type'=>'group',
+                    ]);
+            }
+        }
         // Save Images
         if($uploadedFiles = $request->attaches)
         {
@@ -126,6 +149,15 @@ class GroupsController extends Controller
             {
                 DB::table('user_group_members')->where('user_group_id', $group->id)
                     ->where('member_id', $manager)->update(['is_manager' => 1]);
+                $database
+                    ->getReference('Notifications/'.$manager)
+                    ->push([
+                        'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'createdDate' => time().now(+20),
+                        'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
+                        'is_read'=>'false',
+                        'type'=>'group',
+                    ]);
             }
             /*DB::table('user_group_members')->where('user_group_id', $group->id)
                 ->where('member_id', $request->manager)->update(['is_manager' => 1]);*/
@@ -219,7 +251,27 @@ class GroupsController extends Controller
         }
 
         $group->users()->sync($members);
+        $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/hemmtk-firebase-adminsdk-gufet-035d61ef62.json');
+        $firebase = (new Factory)
+            ->withServiceAccount($serviceAccount)
+            ->withDatabaseUri('https://hemmtk.firebaseio.com')
+            ->create();
+        $database = $firebase->getDatabase();
+        $evenTitle=Event::where('id',$request->event_id)->select('title')->firstOrFail();
 
+        if(!empty($members)){
+            foreach ($members as $member){
+                $database
+                    ->getReference('Notifications/'.$member)
+                    ->push([
+                        'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'createdDate' => time().now(+20),
+                        'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
+                        'is_read'=>'false',
+                        'type'=>'group',
+                    ]);
+            }
+        }
         // Save Images
         if($uploadedFiles = $request->attaches)
         {
@@ -241,6 +293,15 @@ class GroupsController extends Controller
             {
                 DB::table('user_group_members')->where('user_group_id', $group->id)
                     ->where('member_id', $manager)->update(['is_manager' => 1]);
+                $database
+                    ->getReference('Notifications/'.$manager)
+                    ->push([
+                        'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'createdDate' => time().now(+20),
+                        'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
+                        'is_read'=>'false',
+                        'type'=>'group',
+                    ]);
             }
             /*DB::table('user_group_members')->where('user_group_id', $group->id)
                 ->where('member_id', $request->manager)->update(['is_manager' => 1]);*/
