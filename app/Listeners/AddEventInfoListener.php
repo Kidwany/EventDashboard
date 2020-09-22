@@ -73,7 +73,7 @@ class AddEventInfoListener
                 $event_floor->floor_no = $i;
                 $event_floor->barcode = $event->event->id . $i . rand(1000, 9999) . time();
                 $event_floor->save();
-                EventFloors::where('id',$event_floor->id)->update(['barcode'=>GenerateQr::generateQrCode(3,"hemmtk-3,".$event->event->id.",".$event_floor->id)]);
+                EventFloors::where('id',$event_floor->id)->update(['barcode'=>GenerateQr::generateQrCode(4,"hemmtk-3,".$event->event->id.",".$event_floor->id)]);
             }
         }
     }
