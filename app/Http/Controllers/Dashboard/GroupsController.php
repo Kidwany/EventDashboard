@@ -120,7 +120,7 @@ class GroupsController extends Controller
                 $database
                     ->getReference('Notifications/'.$member)
                     ->push([
-                        'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
                         'createdDate' => time().now(+20),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
@@ -152,7 +152,7 @@ class GroupsController extends Controller
                 $database
                     ->getReference('Notifications/'.$manager)
                     ->push([
-                        'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
                         'createdDate' => time().now(+20),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
@@ -264,7 +264,7 @@ class GroupsController extends Controller
                 $database
                     ->getReference('Notifications/'.$member)
                     ->push([
-                        'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'body' => 'تم اضافتك كعضو فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
                         'createdDate' => time().now(+20),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
@@ -296,7 +296,7 @@ class GroupsController extends Controller
                 $database
                     ->getReference('Notifications/'.$manager)
                     ->push([
-                        'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name."لفاعليه".$evenTitle->title ,
+                        'body' => 'تم اضافتك كمشرف فى مجموعه '.$request->name." لفاعليه "." ".$evenTitle->title ,
                         'createdDate' => time().now(+20),
                         'icon'=>URL::to('/dashboard/assets/images/icon/group.a8110972.svg'),
                         'is_read'=>'false',
