@@ -112,6 +112,7 @@
                                                 <td style="display: flex">
                                                     <a href="{{adminUrl('gates/' . $gate->id . '/edit')}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-edit"></i> </a>
                                                     <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$gate->id}}" data-color="red"><i class="zmdi zmdi-delete"></i> </a>
+                                                    <a target="_blank" href="{{adminUrl('gates/'. $gate->id . '/print')}}" class="btn btn-success"><i class="zmdi zmdi-print"></i> </a>
                                                 </td>
                                             </tr>
                                         @endforeach

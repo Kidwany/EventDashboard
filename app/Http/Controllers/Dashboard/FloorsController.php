@@ -121,4 +121,10 @@ class FloorsController extends Controller
             return $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
         }
     }
+
+    public function printQr($id)
+    {
+        $floor =  EventFloors::findOrFail($id);
+        return view('printFloorQR', compact('floor'));
+    }
 }

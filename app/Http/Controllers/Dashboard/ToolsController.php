@@ -124,4 +124,10 @@ class ToolsController extends Controller
             return $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
         }
     }
+
+    public function printQr($id)
+    {
+        $tool =  EventTools::findOrFail($id);
+        return view('printToolQR', compact('tool'));
+    }
 }

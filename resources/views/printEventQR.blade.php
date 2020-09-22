@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>ID-{{$user->name}}</title>
+    <title>ID-{{$event->title}}</title>
 
     <link rel="stylesheet" href="{{assetPath('dashboard/assets/plugins/bootstrap/css/bootstrap.min.css')}}">
     <!-- Colorpicker Css -->
@@ -33,7 +33,7 @@
 				border: 1px solid rgba(0, 0, 0, 0.1);
 				border-radius: 4px;
 				width: 500px;
-				height: 320px;
+				height: auto;
 				position: relative;
 			}
 			.logo-div {
@@ -138,17 +138,15 @@
                                 <div class="main-content">
                                     <div class="profile-content">
                                         <div class="profile-img">
-                                            <img src="{{$user->image_id ? $user->image->url : assetPath('dashboard/assets/images/user.png')}}" alt="profile" />
+                                            <img src="{{assetPath('general/hemmtk.jpeg')}}" alt="profile" />
                                         </div>
-                                        <div class="name">{{$user->fname . ' ' . $user->mname . ' ' . $user->lname}}  </div>
-                                        <div class="job">@if($user->serviceProviderJobs->count())
-                                                @foreach($user->serviceProviderJobs as $job)
-                                                    {{$job->job_ar}}
-                                                @endforeach
-                                            @endif</div>
+                                        <div class="name">{{$event->title}}  </div>
+                                        <div class="job">
+                                           تسجيل الحضور
+                                        </div>
                                     </div>
                                     <div class="qr-wrapper">
-                                        <img src="{{$user->spqr}}" alt="qr code" />
+                                        <img src="{{$event->evqrin}}" alt="qr code" />
                                     </div>
                                 </div>
                             </div>

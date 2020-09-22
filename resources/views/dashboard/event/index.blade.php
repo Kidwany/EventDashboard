@@ -76,6 +76,7 @@
                                                 <td>
                                                     <a href="{{adminUrl('event/'. $event->id .'/edit')}}" class="btn btn-primary"><i class="zmdi zmdi-edit"></i> </a>
                                                     <a href="{{adminUrl('event/'. $event->id)}}" class="btn btn-success"><i class="zmdi zmdi-eye"></i> </a>
+                                                    <a target="_blank" href="{{adminUrl('event/'. $event->id . '/print')}}" class="btn btn-success"><i class="zmdi zmdi-print"></i> </a>
                                                     {{--<a href="#" class="btn bg-red waves-effect" data-toggle="modal" data-target="#delete{{$event->id}}" data-color="red"><i class="zmdi zmdi-delete"></i> </a>--}}
                                                 </td>
                                             </tr>
