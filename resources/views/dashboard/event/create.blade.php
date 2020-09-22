@@ -182,11 +182,26 @@
                                     </div>
 
                                     <div class="col-lg-6 col-md-12 col-sm-3">
+                                        <label for="email_address">توقيت الفعالية</label>
+                                        <div class="form-group">
+                                            <input required type="time" name="start_time" value="{{old('start_time') ? date('Y-m-d', strtotime(old('start_time'))) : ''}}" id="email_address" class="form-control" placeholder="ادخل عنوان الفعالية بالتفصيل">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-12 col-sm-3">
                                         <label for="email_address">نهاية الفعالية</label>
                                         <div class="form-group">
                                             <input required type="date" name="end" value="{{old('end') ? date('Y-m-d', strtotime(old('end'))) : ''}}" id="email_address" class="form-control" placeholder="ادخل عنوان الفعالية بالتفصيل">
                                         </div>
                                     </div>
+
+                                    <div class="col-lg-6 col-md-12 col-sm-3">
+                                        <label for="email_address">توقيت نهاية  الفعالية</label>
+                                        <div class="form-group">
+                                            <input required type="time" name="end_time" value="{{old('end_time') ? date('Y-m-d', strtotime(old('end_time'))) : ''}}" id="email_address" class="form-control" placeholder="ادخل عنوان الفعالية بالتفصيل">
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">حفظ</button>
                             </div>

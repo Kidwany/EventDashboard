@@ -112,7 +112,7 @@ class GroupsController extends Controller
                 $fileName=time(). $uploadedFile->getClientOriginalName();
                 $uploadedFile->move("uploads/groups", $fileName);
                 $filePath = "uploads/groups/".$fileName;
-                $image = File::create(['name' => $fileName, 'path' => $filePath,'url'=>assetPath($filePath),'alt' =>"group attach", 'title' => $uploadedFile->getClientOriginalName()]);
+                $image = File::create(['name' => $uploadedFile->getClientOriginalName(), 'path' => $filePath,'url'=>assetPath($filePath),'alt' =>"group attach", 'title' => $uploadedFile->getClientOriginalName()]);
                 $attach = new GroupAttaches();
                 $attach->user_group_id   = $group->id;
                 $attach->file_id   = $image->id;
@@ -122,8 +122,13 @@ class GroupsController extends Controller
 
         if (!empty($request->manager))
         {
-            DB::table('user_group_members')->where('user_group_id', $group->id)
-                ->where('member_id', $request->manager)->update(['is_manager' => 1]);
+            foreach ($request->manager as $manager)
+            {
+                DB::table('user_group_members')->where('user_group_id', $group->id)
+                    ->where('member_id', $manager)->update(['is_manager' => 1]);
+            }
+            /*DB::table('user_group_members')->where('user_group_id', $group->id)
+                ->where('member_id', $request->manager)->update(['is_manager' => 1]);*/
         }
 
         return redirect('groups/' . $request->event_id)->with('create', 'تم اضافة المجموعة بنجاح');
@@ -169,14 +174,15 @@ class GroupsController extends Controller
             ->whereIn('id', array_merge($available_users, $group_members))
             ->get();
 
-        $manager_id = DB::table('user_group_members')
+        $managers = DB::table('user_group_members')
             ->whereIn('user_group_id', $existed_groups)
+            ->where('is_manager', 1)
             ->pluck('member_id')
             ->first();
 
         $colors = Color::all();
 
-        return view('dashboard.groups.edit', compact('event', 'users', 'colors', 'group', 'group_members', 'manager_id'));
+        return view('dashboard.groups.edit', compact('event', 'users', 'colors', 'group', 'group_members', 'managers'));
     }
 
 
@@ -220,8 +226,8 @@ class GroupsController extends Controller
             foreach ($uploadedFiles as $uploadedFile):
                 $fileName=time(). $uploadedFile->getClientOriginalName();
                 $uploadedFile->move("uploads/groups", $fileName);
-                $filePath = "uploads/groups".$fileName;
-                $image = File::create(['name' => $fileName, 'path' => $filePath,'url'=>assetPath($filePath),'alt' =>"group attach", 'title' => $uploadedFile->getClientOriginalName()]);
+                $filePath = "uploads/groups/".$fileName;
+                $image = File::create(['name' => $uploadedFile->getClientOriginalName(), 'path' => $filePath,'url'=>assetPath($filePath),'alt' =>"group attach", 'title' => $uploadedFile->getClientOriginalName()]);
                 $attach = new GroupAttaches();
                 $attach->user_group_id   = $group->id;
                 $attach->file_id   = $image->id;
@@ -231,8 +237,13 @@ class GroupsController extends Controller
 
         if (!empty($request->manager))
         {
-            DB::table('user_group_members')->where('user_group_id', $group->id)
-                ->where('member_id', $request->manager)->update(['is_manager' => 1]);
+            foreach ($request->manager as $manager)
+            {
+                DB::table('user_group_members')->where('user_group_id', $group->id)
+                    ->where('member_id', $manager)->update(['is_manager' => 1]);
+            }
+            /*DB::table('user_group_members')->where('user_group_id', $group->id)
+                ->where('member_id', $request->manager)->update(['is_manager' => 1]);*/
         }
 
         return redirect('groups/' . $request->event_id)->with('create', 'تم اضافة المجموعة بنجاح');

@@ -59,6 +59,8 @@
             </div>
         </div>
 
+        @include('dashboard.layouts.eventNav')
+
         <div class="container-fluid">
             @include('dashboard.layouts.messages')
             <!-- Vertical Layout -->

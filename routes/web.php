@@ -51,6 +51,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::patch('groups/update/{id}', 'GroupsController@update');
     Route::get('groups/edit/{event_id}/{group_id}', 'GroupsController@edit');
     Route::delete('groups/delete/{group_id}', 'GroupsController@destroy');
+
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Gates Floors  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -60,8 +61,19 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('floors/{id}/edit', 'FloorsController@edit');
     Route::patch('floors/{id}/update', 'FloorsController@update');
     Route::delete('floors/{id}/delete', 'FloorsController@destroy');
+
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::::::::::::::::::::::::::::::::::  Gates Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::  Tools Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('tools/{event_id}', 'ToolsController@index');
+    Route::get('tools/create', 'ToolsController@create');
+    Route::post('tools/store', 'ToolsController@store');
+    Route::get('tools/{id}/edit', 'ToolsController@edit');
+    Route::patch('tools/{id}/update', 'ToolsController@update');
+    Route::delete('tools/{id}/delete', 'ToolsController@destroy');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::  Tools Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('gates/{event_id}', 'GatesController@index');
     Route::get('gates/create', 'GatesController@create');
@@ -115,6 +127,8 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     /*--------  Contact   --------*/
     Route::get('contact/edit', 'ContactController@edit');
     Route::patch('contact/update', 'ContactController@update');
+
+    Route::post('files/{id}/{group_id}/delete', 'FilesControleer@destroy');
 
     Route::get('/logout', 'DashboardController@logout');
 

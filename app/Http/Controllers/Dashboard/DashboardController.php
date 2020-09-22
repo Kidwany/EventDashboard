@@ -17,7 +17,7 @@ class DashboardController extends Controller
     public function index()
     {
         $organization_id = Auth::user()->id;
-        $events = Event::all()->where('organization_id', $organization_id)->count();
+        $events = Event::all()->where('status_id', 1)->where('organization_id', $organization_id)->count();
         $events_ids = DB::table('events')->where('organization_id', $organization_id)->pluck('id');
         $applicants = EventAttendRequest::all()->whereIn('event_id', $events_ids)->count();
         $latest_events = Event::all()->where('organization_id', $organization_id)->where('status_id', 1);

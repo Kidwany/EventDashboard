@@ -40,6 +40,7 @@ class EventController extends Controller
     {
         $events = Event::with('city', 'category')
             ->where('organization_id', Auth::user()->id)
+            ->where('status_id', 1)
             ->orderByDesc('created_at')->get();
         return view('dashboard.event.index', compact('events'));
     }
@@ -66,19 +67,21 @@ class EventController extends Controller
     {
         try{
             $v = Validator::make($request->all(), [
-                'title'         => 'required',
-                'description'   => 'required',
-                'floors'        => 'required|int',
-                'address'       => 'required|max:191',
-                'location'      => 'required',
-                'image'         => 'required',
-                'images.*'      => 'required',
-                'city_id'       => 'required|int',
-                'category_id'   => 'required|int',
-                'start'         => 'required',
-                'end'           => 'required',
-                'gate_type_ids.*'     => 'required',
-                'gates_names.*'   => 'required',
+                'title'             => 'required',
+                'description'       => 'required',
+                'floors'            => 'required|int',
+                'address'           => 'required|max:191',
+                'location'          => 'required',
+                'image'             => 'required',
+                'images.*'          => 'required',
+                'city_id'           => 'required|int',
+                'category_id'       => 'required|int',
+                'start'             => 'required',
+                'start_time'        => 'required',
+                'end'               => 'required',
+                'end_time'          => 'required',
+                'gate_type_ids.*'   => 'required',
+                'gates_names.*'     => 'required',
             ], [], []);
 
             if ($v->fails())
@@ -104,9 +107,9 @@ class EventController extends Controller
             $event->organization_id = Auth::user()->id;
             $event->slug = $request->title;
             $event->description = $request->description;
-            $event->event_date = date('Y-m-d', strtotime($request->start));
-            $event->event_start = date('Y-m-d', strtotime($request->start));
-            $event->event_end = date('Y-m-d', strtotime($request->end));
+            $event->event_date = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
+            $event->event_start = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
+            $event->event_end = date('Y-m-d h:i:s', strtotime($request->end . ' ' . $request->end_time));
             $event->floors = $request->floors;
             $event->status_id = 3;
             $event->country_id = 2;

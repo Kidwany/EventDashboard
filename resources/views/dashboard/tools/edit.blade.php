@@ -45,11 +45,11 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>الطوابق</h2>
+                    <h2>المعدات</h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#"><i class="zmdi zmdi-home"></i> همتك </a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">الطوابق </a></li>
-                        <li class="breadcrumb-item active"> جميع الطوابق </li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">المعدات </a></li>
+                        <li class="breadcrumb-item active"> جميع المعدات </li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
                 </div>
@@ -67,14 +67,15 @@
                         <div class="body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs p-0 mb-3 nav-tabs-success" role="tablist">
-                                <li class="nav-item"><a class="nav-link {{Request::is('event/*') ? 'active' : ''}}"         href="{{adminUrl('event/' . $floor->event_id)}}"> <i class="zmdi zmdi-inbox"></i> الفعالية </a></li>
-                                <li class="nav-item"><a class="nav-link {{Request::is('applicants/*') ? 'active' : ''}}"    href="{{adminUrl('applicants/' . $floor->event_id)}}"><i class="zmdi zmdi-group-work"></i> الطلبات </a></li>
-                                <li class="nav-item"><a class="nav-link {{Request::is('groups/*') ? 'active' : ''}}"        href="{{adminUrl('groups/' . $floor->event_id)}}"><i class="zmdi zmdi-badge-check"></i> المجموعات </a></li>
-                                <li class="nav-item"><a class="nav-link {{Request::is('floors/*') ? 'active' : ''}}"        href="{{adminUrl('floors/' . $floor->event_id)}}"><i class="zmdi zmdi-accounts"></i> الأدوار </a></li>
-                                <li class="nav-item"><a class="nav-link {{Request::is('gates/*') ? 'active' : ''}}"         href="{{adminUrl('gates/' . $floor->event_id)}}"><i class="zmdi zmdi-store"></i> البوابات </a></li>
-                                <li class="nav-item"><a class="nav-link {{Request::is('organizers/*') ? 'active' : ''}}"    href="{{adminUrl('organizers/' . $floor->event_id)}}"><i class="zmdi zmdi-fire"></i> المنظمين </a></li>
-                                <li class="nav-item"><a class="nav-link {{Request::is('tasks/*') ? 'active' : ''}}"         href="{{adminUrl('tasks/' . $floor->event_id)}}"><i class="zmdi zmdi-view-list-alt"></i> المهام </a></li>
-                                <li class="nav-item"><a class="nav-link {{Request::is('tracking/*') ? 'active' : ''}}"      href="{{adminUrl('tracking/' . $floor->event_id)}}"><i class="zmdi zmdi-map"></i> التتبع </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('event/*') ? 'active' : ''}}"         href="{{adminUrl('event/' . $tool->event_id)}}"> <i class="zmdi zmdi-inbox"></i> الفعالية </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('applicants/*') ? 'active' : ''}}"    href="{{adminUrl('applicants/' . $tool->event_id)}}"><i class="zmdi zmdi-group-work"></i> الطلبات </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('groups/*') ? 'active' : ''}}"        href="{{adminUrl('groups/' . $tool->event_id)}}"><i class="zmdi zmdi-badge-check"></i> المجموعات </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('floors/*') ? 'active' : ''}}"        href="{{adminUrl('floors/' . $tool->event_id)}}"><i class="zmdi zmdi-accounts"></i> الأدوار </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('gates/*') ? 'active' : ''}}"         href="{{adminUrl('gates/' . $tool->event_id)}}"><i class="zmdi zmdi-store"></i> البوابات </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('organizers/*') ? 'active' : ''}}"    href="{{adminUrl('organizers/' . $tool->event_id)}}"><i class="zmdi zmdi-fire"></i> المنظمين </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('tasks/*') ? 'active' : ''}}"         href="{{adminUrl('tasks/' . $tool->event_id)}}"><i class="zmdi zmdi-view-list-alt"></i> المهام </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('tracking/*') ? 'active' : ''}}"      href="{{adminUrl('tracking/' . $tool->event_id)}}"><i class="zmdi zmdi-map"></i> التتبع </a></li>
+                                <li class="nav-item"><a class="nav-link {{Request::is('tools/*') ? 'active' : ''}}"      href="{{adminUrl('tools/' . $tool->event_id)}}"><i class="zmdi zmdi-speaker"></i> المعدات </a></li>
                             </ul>
                         </div>
                     </div>
@@ -85,22 +86,22 @@
         <div class="container-fluid">
             @include('dashboard.layouts.messages')
             <!-- Vertical Layout -->
-            <form action="{{url('floors/'. $floor->id .'/update')}}" method="post" enctype="multipart/form-data">
+            <form action="{{url('tools/'. $tool->id .'/update')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('patch')
-                <input type="hidden" name="event_id" value="{{$floor->event_id}}">
+                <input type="hidden" name="event_id" value="{{$tool->event_id}}">
                 <div class="card">
                     @include('dashboard.layouts.messages')
                     <div class="header">
-                        <h2><strong>تعديل الدور</strong></h2>
+                        <h2><strong>تعديل المعدة</strong></h2>
                     </div>
                     <section id="gates">
                         <div class="body">
                             <div class="row" >
                                 <div class="col-lg-12 col-md-12 col-sm-3">
-                                    <label for="email_address">رقم الدور</label>
+                                    <label for="email_address">رقم المعدة</label>
                                     <div class="form-group d-flex justify-content-between">
-                                        <input type="text" value="{{$floor->floor_no}}" name="no" id="email_address" class="form-control" placeholder="ادخل اسم الدور">
+                                        <input type="text" value="{{$tool->name}}" name="name" id="email_address" class="form-control" placeholder="ادخل اسم المعدة">
                                     </div>
                                 </div>
                             </div>

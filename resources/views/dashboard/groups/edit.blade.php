@@ -59,6 +59,8 @@
             </div>
         </div>
 
+        @include('dashboard.layouts.eventNav')
+
         <div class="container-fluid">
             @include('dashboard.layouts.messages')
             <!-- Vertical Layout -->
@@ -121,17 +123,22 @@
                                             <input multiple type="file" name="attaches[]" id="email_address" class="form-control" placeholder="">
                                         </div>
                                     </div>
+
                                     <div class="col-lg-6 col-md-6">
-                                        <label> مشرف المجموعة</label>
-                                        <select name="manager" class="form-control show-tick ms select2"  data-placeholder="اختر الخدمات التي تقدمها المغسلة">
+                                        <label>اضافة مشرفين للمجموعة</label>
+                                        <select name="manager[]" class="form-control show-tick ms select2"  multiple data-placeholder="اختر اعضاء المجموعة من بين المستخدمين">
                                             @if($users)
                                                 @foreach($users as $user)
-                                                    <option value="{{$user->id}}" {{$user->id == $manager_id ? 'selected' : ''}}>{{$user->name}}</option>
+                                                    <option value="{{$user->id}}"
+                                                    @foreach($group->managers as $group_user)
+                                                        {{$group_user->id == $user->id ? 'selected' : ''}}
+                                                        @endforeach
+                                                    >{{$user->name}}
+                                                    </option>
                                                 @endforeach
                                             @endif
                                         </select>
                                     </div>
-
 
 
                                 </div>
@@ -141,6 +148,49 @@
                     </div>
                 </div>
             </form>
+        </div>
+
+        <div class="container-fluid file_manager">
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="doc">
+                                <div class="row clearfix">
+                                    @if($group->files)
+                                        @foreach($group->files as $file)
+                                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                                <div class="card">
+                                                    <div class="file">
+                                                        <a href="{{$file->url}}" download>
+                                                            <div class="hover">
+                                                                {{--<button type="submit" form="deleteFile{{$file->id}}" class="btn btn-icon btn-icon-mini btn-round btn-danger">
+                                                                    <i class="zmdi zmdi-delete"></i>
+                                                                </button>--}}
+                                                            </div>
+                                                            <div class="icon">
+                                                                <i class="zmdi zmdi-file-text"></i>
+                                                            </div>
+                                                            <div class="file-name">
+                                                                <p class="m-b-5 text-muted">{{$file->name}}</p>
+                                                                <small>Size: 42KB <span class="date text-muted">{{$file->created_at}}</span></small>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <form id="deleteFile{{$file->id}}" style="display: none" action="{{url('files/' . $file->id . '/' . $group->id . '/delete')}}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                            </form>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

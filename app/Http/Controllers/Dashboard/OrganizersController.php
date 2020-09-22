@@ -93,11 +93,11 @@ class OrganizersController extends Controller
                 ::where('event_id', $event_id)
                 ->where('user_id', $user_id)
                 ->firstOrFail() ;
-            $eventAttendRequest->status_id  = 9;
-            $eventAttendRequest->save();
+            $eventAttendRequest->status_id  = 5;
+            $eventAttendRequest->delete();
             DB::commit();
 
-            return redirect()->back()->with('create', 'تم رفض الطلب بنجاح');
+            return redirect()->back()->with('create', 'تم حذف المنظم بنجاح');
         }
         catch (\Exception $exception){
             $error = new ErrorClass();
