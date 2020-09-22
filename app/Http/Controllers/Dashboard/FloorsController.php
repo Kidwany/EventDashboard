@@ -57,7 +57,7 @@ class FloorsController extends Controller
         $floor->event_id = $request->event_id;
         $floor->save();
 
-        EventFloors::where('id',$floor->id)->update(['barcode'=>GenerateQr::generateQrCode(3,"hemmtk-4,".$floor->event_id.",".$floor->id)]);
+        EventFloors::where('id',$floor->id)->update(['barcode'=>GenerateQr::generateQrCode(4,"hemmtk-3,".$floor->event_id.",".$floor->id)]);
 
         return redirect()->back()->with('create', 'تم اضافة الطابق بنجاح');
     }
@@ -93,7 +93,7 @@ class FloorsController extends Controller
         $floor->floor_no = $request->no;
         $floor->save();
 
-        EventFloors::where('id',$floor->id)->update(['barcode'=>GenerateQr::generateQrCode(3,"hemmtk-4,".$floor->event_id.",".$floor->id)]);
+        EventFloors::where('id',$floor->id)->update(['barcode'=>GenerateQr::generateQrCode(4,"hemmtk-3,".$floor->event_id.",".$floor->id)]);
 
         return redirect('floors/' . $floor->event_id)->with('create', 'تم تعديل الطابق بنجاح');
     }
