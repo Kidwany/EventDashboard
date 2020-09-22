@@ -81,7 +81,7 @@
                                                         {{$applicant->user->email_verified_at ? 'نشط' : 'نشط'}}
                                                     </span>
                                                 </td>
-                                                <td>{{$applicant->user->created_at->diffForHumans()}}</td>
+                                                <td>{{$applicant->created_at}}</td>
                                                 <td style="display: flex">
                                                     <a target="_blank" href="{{adminUrl('user/' . $applicant->user->id)}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
                                                     <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$applicant->id}}" data-color="red"><i class="zmdi zmdi-block"></i> </a>

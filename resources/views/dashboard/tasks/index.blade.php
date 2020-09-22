@@ -67,11 +67,10 @@
                                                 <strong>{{$task->task_title}}</strong><br>
                                             </td>
                                             <td class="hidden-md-down">
-                                                <ul class="list-unstyled team-info margin-0">
-                                                    @foreach($task->members as $user)
-                                                        <li><img src="{{$user->image_id ? $user->image->url : 'https://www.api.hemmtk.com/general/documents/1599263288download.jpg'}}" alt="Avatar" title="{{$user->name}}"></li>
-                                                    @endforeach
-                                                </ul>
+                                                @foreach($task->members as $user)
+                                                    <a class="single-user-name" href="{{adminUrl('user/' . $user->id)}}">{{$user->name}}</a><br>
+                                                    {{--<li><img src="{{$user->image_id ? $user->image->url : 'https://www.api.hemmtk.com/general/documents/1599263288download.jpg'}}" alt="Avatar" title="{{$user->name}}"></li>--}}
+                                                @endforeach
                                             </td>
                                             <td><span class="badge badge-info">{{$task->Status->title_ar}}</span></td>
                                             <td>{{$task->created_at->diffForHumans()}}</td>

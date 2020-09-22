@@ -59,6 +59,8 @@
             </div>
         </div>
 
+        @include('dashboard.layouts.eventNav')
+
         <div class="container-fluid">
             @include('dashboard.layouts.messages')
             <!-- Vertical Layout -->
@@ -118,6 +120,16 @@
                                     </div>
 
                                     <div class="col-lg-6 col-md-6">
+                                        <label>اضافة مشرفين للمجموعة</label>
+                                        <select name="manager[]" class="form-control show-tick ms select2"  multiple data-placeholder="اختر اعضاء المجموعة من بين المستخدمين">
+                                            @if($users)
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    {{--<div class="col-lg-6 col-md-6">
                                         <label> مشرف المجموعة</label>
                                         <select name="manager" class="form-control show-tick ms select2"  data-placeholder="اختر الخدمات التي تقدمها المغسلة">
                                             @if($users)
@@ -126,7 +138,7 @@
                                                 @endforeach
                                             @endif
                                         </select>
-                                    </div>
+                                    </div>--}}
                                 </div>
                                 <button type="submit" class="btn btn-raised btn-primary btn-round waves-effect">حفظ</button>
                             </div>

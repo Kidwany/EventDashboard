@@ -65,4 +65,10 @@ class UserGroup extends Model
     {
         return $this->belongsToMany(File::class,'group_files','user_group_id','file_id');
     }
+
+    public function managers()
+    {
+        return $this->belongsToMany(User::class, 'user_group_members','user_group_id','member_id')
+            ->where('is_manager', 1);
+    }
 }

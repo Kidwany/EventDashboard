@@ -81,9 +81,10 @@
                                                         {{$user->email_verified_at ? 'نشط' : 'نشط'}}
                                                     </span>
                                                 </td>
-                                                <td>{{$user->created_at->diffForHumans()}}</td>
+                                                <td>{{$user->created_at}}</td>
                                                 <td style="display: flex">
                                                     <a target="_blank" href="{{adminUrl('user/' . $user->id)}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
+                                                    <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$user->id}}" data-color="red"><i class="zmdi zmdi-delete"></i> </a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -98,16 +99,16 @@
         </div>
     </div>
 
-    {{--@if($users)
+    @if($users)
         @foreach($users as $user)
             <div class="modal fade" id="delete{{$user->id}}" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content bg-red">
                         <div class="modal-header">
-                            <h4 class="title" id="defaultModalLabel">رفض الطلب</h4>
+                            <h4 class="title" id="defaultModalLabel">حذف المنظم</h4>
                         </div>
-                        <div class="modal-body text-light" style="text-align: right"> هل انت متأكد من انك تريد رفض طلب المستخدم <strong> {{$user->name}} </strong></div>
-                        <form id="deleteUser{{$user->id}}" style="display: none" action="{{url('applicants/reject/' . $event->id . '/' . $user->id )}}" method="get">
+                        <div class="modal-body text-light" style="text-align: right"> هل انت متأكد من انك تريد حذف المنظم <strong> {{$user->name}} </strong></div>
+                        <form id="deleteUser{{$user->id}}" style="display: none" action="{{url('organizers/reject/' . $event->id . '/' . $user->id )}}" method="get">
                             @csrf
                             @method('get')
                         </form>
@@ -121,7 +122,7 @@
         @endforeach
     @endif
 
-    @if($users)
+    {{--@if($users)
         @foreach($users as $user)
             <div class="modal fade" id="accept{{$user->id}}" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">

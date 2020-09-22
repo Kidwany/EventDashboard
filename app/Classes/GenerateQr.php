@@ -32,6 +32,9 @@ class GenerateQr
                 $Qr->generate($data, '../public/uploads/gateqr/sp'.$data.'.svg');
                 return assetPath('uploads/gateqr/sp'.$data.'.svg');
                 break;
+                case 6:
+                $Qr->generate($data, '../public/uploads/toolqr/sp'.$data.'.svg');
+                return assetPath('uploads/toolqr/sp'.$data.'.svg');
             default:
         }
     }

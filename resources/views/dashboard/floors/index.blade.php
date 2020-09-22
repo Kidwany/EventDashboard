@@ -92,7 +92,7 @@
                                         @foreach($floors as $floor)
                                             <tr>
                                                 <td>{{$floor->id}}</td>
-                                                <td><img src="{{$floor->barcode}}"></td>
+                                                <td><a href="{{$floor->barcode}}" target="_blank"><img src="{{$floor->barcode}}"></a></td>
                                                 <td>{{$floor->floor_no}}</td>
                                                 <td>{{$floor->created_at ? $floor->created_at->diffForHumans() : ''}}</td>
                                                 <td style="display: flex">
