@@ -12,6 +12,9 @@ use App\Models\UserPaymentInfo;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\JobTitle;
+use App\Models\ServiceProviderJobs;
+
 
 class UserController extends Controller
 {
@@ -76,12 +79,17 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $allJobs = JobTitle::get();
+
+
         $user = \App\Models\User::with('image')->findOrFail($id);
         $total_user_events = Event::with('serviceProvider')->where('sp_id', $id)->count();
         $requests = EventAttendRequest::where('user_id', $id)->count();
         $sp_doc = UserDocuments::with('identityImage')->where('user_id', $id)->first();
+        $sp_job = ServiceProviderJobs::where('user_id', $id)->first();
         $user_payment = UserPaymentInfo::where('user_id', $id)->firstOrFail();
-        return view('dashboard.user.edit', compact('user', 'requests', 'total_user_events', 'sp_doc', 'user_payment'));
+
+        return view('dashboard.user.edit', compact('user', 'requests', 'total_user_events', 'sp_doc', 'user_payment','allJobs','sp_job'));
     }
 
     /**
@@ -141,12 +149,15 @@ class UserController extends Controller
         $payment_info->bank = $request->bank;
         $payment_info->ipan_no = $request->ipan_no;
 
+       $jop_title =  ServiceProviderJobs::where('user_id', $user->id)->firstOrFail();
+       $jop_title->job_title_id = $request->job_id;
 
         DB::beginTransaction();
 
         $user->save();
         $documents->save();
         $payment_info->save();
+        $jop_title->save();
 
         DB::commit();
 

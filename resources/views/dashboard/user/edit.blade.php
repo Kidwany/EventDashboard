@@ -159,6 +159,21 @@
                                                             <input type="tel" name="ipan_no" value="{{$user_payment->ipan_no}}" step="any" id="email_address" class="form-control" placeholder="ادخل رقم الجوال ">
                                                         </div>
                                                     </div>
+                                                    <div class="col-lg-6 col-md-6 col-sm-12">
+
+                                                            <label> الوظيفه</label>
+                                                            <select name="job_id" class="form-control show-tick ms select2"  data-placeholder="اختر الوظيفه">
+                                                                @if($allJobs)
+                                                                    @foreach($allJobs as $job)
+                                                                        <option value="{{$job->id}}" {{$sp_job->job_title_id == $job->id ? 'selected' : ''}}>
+                                                                            {{$job->job_ar}}
+                                                                        </option>
+                                                                    @endforeach
+                                                                @endif
+                                                            </select>
+
+
+                                                    </div>
 
                                                     <div class="col-lg-12 col-md-12 col-sm-3">
                                                         <label for="email_address">الصورة الشخصية</label>
