@@ -48,6 +48,7 @@
                                 <li><a href="{{adminUrl('tasks/' . $event->id)}}"><i class="zmdi zmdi-fire"></i>المهام<span class="badge badge-danger">{{$tasks}}</span></a></li>
                                 <li><a href="{{adminUrl('tracking/' . $event->id)}}"><i class="zmdi zmdi-fire"></i>التتبع</a></li>
                                 <li><a href="{{adminUrl('tools/' . $event->id)}}"><i class="zmdi zmdi-speaker"></i>المعدات</a></li>
+                                <li><a href="{{adminUrl('finance/' . $event->id)}}"><i class="zmdi zmdi-money"></i>البيانات المالية</a></li>
                             </ul>
                         </div>
 

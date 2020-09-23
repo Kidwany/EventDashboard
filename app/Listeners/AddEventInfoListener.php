@@ -76,5 +76,33 @@ class AddEventInfoListener
                 EventFloors::where('id',$event_floor->id)->update(['barcode'=>GenerateQr::generateQrCode(4,"hemmtk-3,".$event->event->id.",".$event_floor->id)]);
             }
         }
+
+        for ($i = 1; $i<=14; $i++)
+        {
+            if ($i <= 10)
+            {
+                DB::table('finance_totals')->insert([
+                    'category_id' => $i,
+                    'event_id' => $event->event->id,
+                    'total_expected' => 0,
+                    'total_real_value' => 0,
+                    'type' => 2,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+            else
+            {
+                DB::table('finance_totals')->insert([
+                    'category_id' => $i,
+                    'event_id' => $event->event->id,
+                    'total_expected' => 0,
+                    'total_real_value' => 0,
+                    'type' => 1,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+        }
     }
 }

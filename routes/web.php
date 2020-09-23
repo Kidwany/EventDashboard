@@ -122,6 +122,12 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::resource('admin', 'AdminController');
 
 
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::  Finance Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('finance/{event_id}', 'FinanceController@index');
+
+
     /* Users Controller*/
     Route::resource('user', 'UserController');
     Route::get('print-user/{id}', 'UserController@printPdf');

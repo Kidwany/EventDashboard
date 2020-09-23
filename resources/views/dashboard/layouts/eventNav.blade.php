@@ -15,6 +15,7 @@
                         <li class="nav-item"><a class="nav-link {{Request::is('tasks/*') ? 'active' : ''}}"         href="{{adminUrl('tasks/' . $event->id)}}"><i class="zmdi zmdi-view-list-alt"></i> المهام </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('tracking/*') ? 'active' : ''}}"      href="{{adminUrl('tracking/' . $event->id)}}"><i class="zmdi zmdi-map"></i> التتبع </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('tools/*') ? 'active' : ''}}"      href="{{adminUrl('tools/' . $event->id)}}"><i class="zmdi zmdi-speaker"></i> المعدات </a></li>
+                        <li class="nav-item"><a class="nav-link {{Request::is('finance/*') ? 'active' : ''}}"      href="{{adminUrl('finance/' . $event->id)}}"><i class="zmdi zmdi-money"></i> البيانات المالية </a></li>
                     </ul>
                 </div>
             </div>

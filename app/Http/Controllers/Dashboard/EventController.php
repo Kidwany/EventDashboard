@@ -24,6 +24,7 @@ use App\Models\UserDocuments;
 use App\Models\UserGroup;
 use App\Models\UserPaymentInfo;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -187,7 +188,7 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         $event =  Event::with('city')->findOrFail($id);
-        /*try{*/
+        try{
             $v = Validator::make($request->all(), [
                 'title'         => 'required',
                 'description'   => 'required',
@@ -232,7 +233,6 @@ class EventController extends Controller
             $event->event_start = date('Y-m-d', strtotime($request->start));
             $event->event_end = date('Y-m-d', strtotime($request->end));
             $event->floors = $request->floors;
-            $event->status_id = 3;
             $event->country_id = 2;
             $event->city_id = $request->city_id;
             $event->place = $request->address;
@@ -258,15 +258,48 @@ class EventController extends Controller
                 }
             }
 
+            $event_finance_totals = DB::table('finance_totals')->where('event_id', $event->id)->count();
+            if ($event_finance_totals == 0)
+            {
+                for ($i = 1; $i<=14; $i++)
+                {
+                    if ($i <= 10)
+                    {
+                        DB::table('finance_totals')->insert([
+                            'category_id' => $i,
+                            'event_id' => $event->id,
+                            'total_expected' => 0,
+                            'total_real_value' => 0,
+                            'type' => 2,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ]);
+                    }
+                    else
+                    {
+                        DB::table('finance_totals')->insert([
+                            'category_id' => $i,
+                            'event_id' => $event->id,
+                            'total_expected' => 0,
+                            'total_real_value' => 0,
+                            'type' => 1,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ]);
+                    }
+                }
+            }
+
+
             DB::commit();
 
             return redirect(url('event'))->with('create', 'تم تعديل الفعالية بنجاح')->withInput($request->input());
-        /*}
+        }
         catch (\Exception $exception){
             $error = new ErrorClass();
             $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
             return redirect()->back()->with('exception', 'خطأ في حفظ البيانات')->withInput($request->input());
-        }*/
+        }
     }
 
     /**
