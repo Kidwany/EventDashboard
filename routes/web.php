@@ -127,6 +127,27 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('finance/{event_id}', 'FinanceController@index');
 
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::  Expected Expenses Routes  :::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('expected_expenses/{event_id}', 'ExpectedExpensesController@index');
+    Route::get('expected_expenses/create', 'ExpectedExpensesController@create');
+    Route::post('expected_expenses/store', 'ExpectedExpensesController@store');
+    Route::get('expected_expenses/{id}/edit', 'ExpectedExpensesController@edit');
+    Route::patch('expected_expenses/{id}/update', 'ExpectedExpensesController@update');
+    Route::delete('expected_expenses/{id}/delete', 'ExpectedExpensesController@destroy');
+
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::::::::  Tickets Routes  :::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('tickets/{event_id}', 'TicketsController@index');
+    Route::get('tickets/create', 'TicketsController@create');
+    Route::post('tickets/store', 'TicketsController@store');
+    Route::get('tickets/{id}/edit', 'TicketsController@edit');
+    Route::patch('tickets/{id}/update', 'TicketsController@update');
+    Route::delete('tickets/{id}/delete', 'TicketsController@destroy');
+
 
     /* Users Controller*/
     Route::resource('user', 'UserController');

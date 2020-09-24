@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\EventCreatedEvent;
 use App\Events\EventUpdatedEvent;
+use App\Events\ExpenseAdded;
 use App\Listeners\AddEventInfoListener;
+use App\Listeners\CalculateTotals;
 use App\Listeners\EventBackupListener;
 use App\Listeners\UpdateEventInfoListener;
 use Illuminate\Auth\Events\Registered;
@@ -29,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         EventUpdatedEvent::class => [
             UpdateEventInfoListener::class
+        ],
+        ExpenseAdded::class => [
+            CalculateTotals::class
         ]
     ];
 
