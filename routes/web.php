@@ -148,6 +148,26 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::patch('tickets/{id}/update', 'TicketsController@update');
     Route::delete('tickets/{id}/delete', 'TicketsController@destroy');
 
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::  Sponsors Routes  :::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('sponsors/{event_id}', 'SponsorsController@index');
+    Route::get('sponsors/create', 'SponsorsController@create');
+    Route::post('sponsors/store', 'SponsorsController@store');
+    Route::get('sponsors/{id}/edit', 'SponsorsController@edit');
+    Route::patch('sponsors/{id}/update', 'SponsorsController@update');
+    Route::delete('sponsors/{id}/delete', 'SponsorsController@destroy');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::::::::  Spaces Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('spaces/{event_id}', 'SpacesController@index');
+    Route::get('spaces/create', 'SpacesController@create');
+    Route::post('spaces/store', 'SpacesController@store');
+    Route::get('spaces/{id}/edit', 'SpacesController@edit');
+    Route::patch('spaces/{id}/update', 'SpacesController@update');
+    Route::delete('spaces/{id}/delete', 'SpacesController@destroy');
+
 
     /* Users Controller*/
     Route::resource('user', 'UserController');

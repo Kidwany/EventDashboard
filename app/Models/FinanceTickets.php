@@ -23,7 +23,7 @@ class FinanceTickets extends Model
      *
      * @var string
      */
-    protected $table = 'finance_sponsors';
+    protected $table = 'finance_tickets';
 
     /**
      * The connection name for the model.
