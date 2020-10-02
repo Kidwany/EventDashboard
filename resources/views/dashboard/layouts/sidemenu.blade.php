@@ -18,10 +18,10 @@
             </li>
             <li class="active open"><a href="https://www.dashboard.hemmtk.com/"><i class="zmdi zmdi-home"></i><span>الصفحة الرئيسية</span></a></li>
             <li>
-                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-fire"></i><span>الفعاليات</span></a>
+                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-fire"></i><span>المواسم</span></a>
                 <ul class="ml-menu">
-                    <li><a href="{{adminUrl('event')}}">شاهد جميع الفعاليات</a></li>
-                    <li><a href="{{adminUrl('event/create')}}"> فعالية جديدة </a></li>
+                    <li><a href="{{adminUrl('season')}}">شاهد جميع المواسم</a></li>
+                    <li><a href="{{adminUrl('season/create')}}"> موسم جديد </a></li>
                 </ul>
             </li>
             <li>

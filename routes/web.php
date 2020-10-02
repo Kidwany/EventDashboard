@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
 
     Route::resource('product', 'ProductController');
     Route::resource('event', 'EventController');
+    Route::resource('season', 'SeasonController');
     Route::get('event/{id}/print', 'EventController@printQr');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -69,6 +70,16 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::patch('floors/{id}/update', 'FloorsController@update');
     Route::delete('floors/{id}/delete', 'FloorsController@destroy');
     Route::get('floors/{id}/print', 'FloorsController@printQr');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::  Event Zones  :::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('zones/{event_id}', 'ZoneController@index');
+    Route::get('zones/{event_id}/create', 'ZoneController@create');
+    Route::post('zones/store', 'ZoneController@store');
+    Route::get('zones/{id}/edit', 'ZoneController@edit');
+    Route::patch('zones/{id}/update', 'ZoneController@update');
+    Route::delete('zones/{id}/delete', 'ZoneController@destroy');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Tools Routes  ::::::::::::::::::::::::::*/

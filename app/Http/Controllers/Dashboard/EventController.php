@@ -17,6 +17,7 @@ use App\Models\EventGates;
 use App\Models\EventImages;
 use App\Models\GateType;
 use App\Models\Image;
+use App\Models\Season;
 use App\Models\ServiceProviderExperience;
 use App\Models\ServiceProviderTask;
 use App\Models\Task;
@@ -56,7 +57,8 @@ class EventController extends Controller
         $cities = City::all()->where('country_id', 2);
         $categories = Category::all();
         $gates_types = GateType::all();
-        return view('dashboard.event.create', compact('cities', 'categories', 'gates_types'));
+        $seasons = Season::all();
+        return view('dashboard.event.create', compact('cities', 'categories', 'gates_types', 'seasons'));
     }
 
 
@@ -70,6 +72,7 @@ class EventController extends Controller
             $v = Validator::make($request->all(), [
                 'title'             => 'required',
                 'description'       => 'required',
+                'budget'            => 'required',
                 'floors'            => 'required|int',
                 'address'           => 'required|max:191',
                 'location'          => 'required',
@@ -104,7 +107,9 @@ class EventController extends Controller
 
             // Save Event
             $event = new Event();
+            $event->season_id = $request->season_id;
             $event->title = $request->title;
+            $event->budget = $request->budget;
             $event->organization_id = Auth::user()->id;
             $event->slug = $request->title;
             $event->description = $request->description;
@@ -171,11 +176,12 @@ class EventController extends Controller
      */
     public function edit($id)
     {
+        $seasons = Season::all();
         $event =  Event::with('city')->findOrFail($id);
         $cities = City::all()->where('country_id', 2);
         $categories = Category::all();
         $gates_types = GateType::all();
-        return view('dashboard.event.edit', compact('event', 'cities', 'categories', 'gates_types'));
+        return view('dashboard.event.edit', compact('event', 'cities', 'categories', 'gates_types', 'seasons'));
     }
 
     /**
@@ -192,6 +198,7 @@ class EventController extends Controller
             $v = Validator::make($request->all(), [
                 'title'         => 'required',
                 'description'   => 'required',
+                'budget'        => 'required',
                 'floors'        => 'required|int',
                 'address'       => 'required|max:191',
                 'location'      => 'required',
@@ -226,8 +233,10 @@ class EventController extends Controller
 
             // Save Event
             $event->title = $request->title;
+            $event->season_id = $request->season_id;
             $event->organization_id = Auth::user()->id;
             $event->slug = $request->title;
+            $event->budget = $request->budget;
             $event->description = $request->description;
             $event->event_date = date('Y-m-d', strtotime($request->start));
             $event->event_start = date('Y-m-d', strtotime($request->start));

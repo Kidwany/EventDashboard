@@ -98,6 +98,20 @@
                             </div>
                             <div class="body">
                                 <div class="row">
+
+                                    <div class="col-lg-6 col-md-6">
+                                        <label> الموسم</label>
+                                        <select name="season_id" class="form-control show-tick ms select2"  data-placeholder="اختر الموسم">
+                                            @if($seasons)
+                                                @foreach($seasons as $season)
+                                                    <option value="{{$season->id}}" {{old('season_id') == $season->id ? 'selected' : ''}}>
+                                                        {{$season->name}}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+
                                     <div class="col-lg-6 col-md-12 col-sm-3">
                                         <label for="email_address">اسم الفعالية</label>
                                         <div class="form-group">
@@ -199,6 +213,13 @@
                                         <label for="email_address">توقيت نهاية  الفعالية</label>
                                         <div class="form-group">
                                             <input required type="time" name="end_time" value="{{old('end_time') ? date('Y-m-d', strtotime(old('end_time'))) : ''}}" id="email_address" class="form-control" placeholder="ادخل عنوان الفعالية بالتفصيل">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-12 col-sm-3">
+                                        <label for="email_address">الميزانية</label>
+                                        <div class="form-group">
+                                            <input required type="number" name="budget" value="{{old('budget')}}" step="any" id="email_address" class="form-control" placeholder="ميزاينة الفعالية">
                                         </div>
                                     </div>
 

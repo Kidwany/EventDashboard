@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.layouts')
-@section('title', 'المجموعات')
+@section('title', 'المناطق')
 @section('customizedStyle')
     <style>
         .colors ul{list-style:none; padding:0; margin: 0;}
@@ -45,10 +45,10 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>المجموعات </h2>
+                    <h2>المناطق </h2>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{adminUrl('/')}}"><i class="zmdi zmdi-home"></i> همتك </a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">المجموعات </a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">المناطق </a></li>
                         <li class="breadcrumb-item active"> مجموعة جديدة </li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
@@ -64,7 +64,7 @@
         <div class="container-fluid">
             @include('dashboard.layouts.messages')
             <!-- Vertical Layout -->
-            <form action="{{url('groups/'. $event->id .'/store')}}" method="post" enctype="multipart/form-data">
+            <form action="{{url('zones/store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('post')
                 <div class="row clearfix">
@@ -72,70 +72,27 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="header">
-                                <h2><strong>اضف بيانات المجموعات </strong></h2>
+                                <h2><strong>اضف بيانات المناطق </strong></h2>
                             </div>
                             <div class="body">
                                 <div class="row">
-
-                                    <div class="col-lg-6 col-md-6">
-                                        <label> المنطقة</label>
-                                        <select name="zone_id" class="form-control show-tick ms select2"  data-placeholder="اختر المنطقة">
-                                            @if($zones)
-                                                @foreach($zones as $zone)
-                                                    <option value="{{$zone->id}}" {{old('zone_id') == $zone->id ? 'selected' : ''}}>
-                                                        {{$zone->name}}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-
                                     <div class="col-lg-6 col-md-12 col-sm-3">
-                                        <label for="email_address">اسم المجموعة</label>
+                                        <label for="email_address">اسم المنطقة</label>
                                         <div class="form-group">
-                                            <input required type="text" name="name" value="{{old('name')}}" id="email_address" class="form-control" placeholder="ادخل اسم المجموعة">
+                                            <input required type="text" name="name" value="{{old('name')}}" id="email_address" class="form-control" placeholder="ادخل اسم المنطقة">
                                         </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <label for="email_address">اختر لون المجموعة</label>
-                                        <div class="colors">
-                                            <ul>
-                                                @if($colors)
-                                                    @foreach($colors as $color)
-                                                        <li>
-                                                            <label>
-                                                                <input required type="radio" name="color" value="{{$color->id}}">
-                                                                <span class="swatch" style="background-color:{{$color->hex}}"></span>
-                                                            </label>
-                                                        </li>
-                                                    @endforeach
-                                                @endif
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6">
-                                        <label>اضافة مستخدمين للمجموعة</label>
-                                        <select name="users[]" class="form-control show-tick ms select2"  multiple data-placeholder="اختر اعضاء المجموعة من بين المستخدمين">
-                                            @if($users)
-                                                @foreach($users as $user)
-                                                    <option value="{{$user->id}}">{{$user->name}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
                                     </div>
 
                                     <div class="col-lg-6 col-md-12 col-sm-3">
-                                        <label for="email_address">اضافة مرفقات للمجموعة</label>
+                                        <label for="email_address">اضافة مرفقات للمنطقة</label>
                                         <div class="form-group">
                                             <input multiple type="file" name="attaches[]" id="email_address" class="form-control" placeholder="">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6">
-                                        <label>اضافة مشرفين للمجموعة</label>
-                                        <select name="manager[]" class="form-control show-tick ms select2"  multiple data-placeholder="اختر اعضاء المجموعة من بين المستخدمين">
+                                        <label>اضافة مشرفين للمنطقة</label>
+                                        <select name="managers[]" class="form-control show-tick ms select2"  multiple data-placeholder="اختر اعضاء المنطقة من بين المستخدمين">
                                             @if($users)
                                                 @foreach($users as $user)
                                                     <option value="{{$user->id}}">{{$user->name}}</option>

@@ -8,6 +8,7 @@
                     <ul class="nav nav-tabs p-0 mb-3 nav-tabs-success" role="tablist">
                         <li class="nav-item"><a class="nav-link {{Request::is('event/*') ? 'active' : ''}}"         href="{{adminUrl('event/' . $event->id)}}"> <i class="zmdi zmdi-inbox"></i> الفعالية </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('applicants/*') ? 'active' : ''}}"    href="{{adminUrl('applicants/' . $event->id)}}"><i class="zmdi zmdi-group-work"></i> الطلبات </a></li>
+                        <li class="nav-item"><a class="nav-link {{Request::is('zones/*') ? 'active' : ''}}"    href="{{adminUrl('zones/' . $event->id)}}"><i class="zmdi zmdi-map"></i> المناطق </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('groups/*') ? 'active' : ''}}"        href="{{adminUrl('groups/' . $event->id)}}"><i class="zmdi zmdi-badge-check"></i> المجموعات </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('floors/*') ? 'active' : ''}}"        href="{{adminUrl('floors/' . $event->id)}}"><i class="zmdi zmdi-accounts"></i> الأدوار </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('gates/*') ? 'active' : ''}}"         href="{{adminUrl('gates/' . $event->id)}}"><i class="zmdi zmdi-store"></i> البوابات </a></li>
