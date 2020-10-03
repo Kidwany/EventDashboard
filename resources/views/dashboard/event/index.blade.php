@@ -35,8 +35,10 @@
             <div class="row clearfix">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="header">
+                        <div class="header d-flex justify-content-between">
                             <h2><strong>قائمة </strong> الفعاليات </h2>
+                            <a href="{{url('event/create')}}" class="btn btn-primary">
+                                <i class="zmdi zmdi-plus"></i> فعالية جديدة </a>
                         </div>
                         <div class="body">
                             <div class="table-responsive">

@@ -69,7 +69,7 @@
                                                 <td>{{$season->name}}</td>
                                                 <td>{{$season->city->city_ar->title}}</td>
                                                 <td>{{$season->start}} </td>
-                                                <td>{{$season->created_at->diffForHumans()}}</td>
+                                                <td>{{$season->created_at ? $season->created_at->diffForHumans() : ""}}</td>
                                                 <td>
                                                     <a href="{{adminUrl('season/'. $season->id .'/edit')}}" class="btn btn-primary"><i class="zmdi zmdi-edit"></i> </a>
                                                     <a href="{{adminUrl('season/'. $season->id)}}" class="btn btn-success"><i class="zmdi zmdi-eye"></i> </a>
