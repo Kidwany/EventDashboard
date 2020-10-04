@@ -67,7 +67,7 @@ class UserController extends Controller
         $sp_experience = ServiceProviderExperience::where('user_id', $id)->get();
         $sp_doc = UserDocuments::with('identityImage')->where('user_id', $id)->first();
         $requests = EventAttendRequest::where('user_id', $id)->count();
-        $user_payment = UserPaymentInfo::where('user_id', $id)->firstOrFail();
+        $user_payment = UserPaymentInfo::where('user_id', $id)->first();
         return view('dashboard.user.show', compact('user', 'events', 'total_user_events', 'sp_experience', 'sp_doc', 'requests', 'user_payment'));
     }
 

@@ -82,6 +82,28 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::delete('zones/{id}/delete', 'ZoneController@destroy');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::  Event Company  :::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('company/{event_id}', 'CompanyController@index');
+    //Route::get('company/{event_id}/show/{company_id}', 'CompanyController@show');
+    Route::get('company/{event_id}/create', 'CompanyController@create');
+    Route::post('company/store', 'CompanyController@store');
+    Route::get('company/{id}/edit', 'CompanyController@edit');
+    Route::patch('company/{id}/update', 'CompanyController@update');
+    Route::delete('company/{id}/delete', 'CompanyController@destroy');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::: Event Company Users ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('company-user', 'CompanyUserController@index');
+    Route::get('company-user/{id}', 'CompanyUserController@index');
+    Route::get('company-user/{id}/create', 'CompanyUserController@create');
+    Route::post('company-user/store', 'CompanyUserController@store');
+    Route::get('company-user/{id}/edit', 'CompanyUserController@edit');
+    Route::patch('company-user/{id}/update', 'CompanyUserController@update');
+    Route::delete('company-user/{id}/delete', 'CompanyUserController@destroy');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Tools Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('tools/{event_id}', 'ToolsController@index');

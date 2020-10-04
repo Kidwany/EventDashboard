@@ -323,11 +323,11 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <p class="text-muted">البنك : </p>
-                                    <h3>{{$user_payment ? $user_payment->bank : ""}}</h3>
+                                    <h3>{{$user_payment->bank}}</h3>
                                 </div>
                                 <div class="col-lg-6">
                                     <p class="text-muted">رقم الأيبان : </p>
-                                    <h3>{{$user_payment ? $user_payment->ipan_no : ""}}</h3>
+                                    <h3>{{$user_payment->ipan_no}}</h3>
                                 </div>
                             </div>
 

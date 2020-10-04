@@ -16,6 +16,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class CompanyCategories extends Model
 {
+    /**
+     * @var string
+     */
     protected $connection = 'mysql';
+    /**
+     * @var string
+     */
     protected $table = 'company_categories';
 }
