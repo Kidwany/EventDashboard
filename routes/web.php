@@ -114,6 +114,18 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::delete('tools/{id}/delete', 'ToolsController@destroy');
     Route::get('tools/{id}/print', 'ToolsController@printQr');
 
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::  Guardian Ship Routes  ::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('guardian-ship/{event_id}', 'GuardianShipController@index');
+    Route::get('guardian-ship/{event_id}/create', 'GuardianShipController@create');
+    Route::post('guardian-ship/{event_id}/store', 'GuardianShipController@store');
+    Route::get('guardian-ship/{id}/edit', 'GuardianShipController@edit');
+    Route::patch('guardian-ship/{id}/update', 'GuardianShipController@update');
+    Route::delete('guardian-ship/{id}/delete', 'GuardianShipController@destroy');
+    Route::get('guardian-ship/{id}/print', 'GuardianShipController@printQr');
+
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Gates Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/

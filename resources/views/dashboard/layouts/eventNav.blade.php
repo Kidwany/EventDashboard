@@ -18,6 +18,7 @@
                         <li class="nav-item"><a class="nav-link {{Request::is('tools/*') ? 'active' : ''}}"         href="{{adminUrl('tools/' . $event->id)}}"><i class="zmdi zmdi-speaker"></i> المعدات </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('finance/*') ? 'active' : ''}}"       href="{{adminUrl('finance/' . $event->id)}}"><i class="zmdi zmdi-money"></i> البيانات المالية </a></li>
                         <li class="nav-item"><a class="nav-link {{Request::is('company/*') || Request::is('company-user/*') ? 'active' : ''}}"       href="{{adminUrl('company/' . $event->id)}}"><i class="zmdi zmdi-hotel"></i> الشركات</a></li>
+                        <li class="nav-item"><a class="nav-link {{Request::is('guardian-ship/*') ? 'active' : ''}}"                 href="{{adminUrl('guardian-ship/' . $event->id)}}"><i class="zmdi zmdi-plus-box"></i> العهدة</a></li>
                     </ul>
                 </div>
             </div>

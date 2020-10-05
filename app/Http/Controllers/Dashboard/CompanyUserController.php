@@ -123,6 +123,24 @@ class CompanyUserController extends Controller
 
             User::where('id',$user->id)->update(['spqr'=>GenerateQr::generateQrCode(1,$user->id)]);
 
+            // Check if Company is Security
+            $company = Company::with('event')->findOrFail($user->company_id);
+            if ($company->category_id == 4)
+            {
+                DB::table('sp_jobs')->insert([
+                    'user_id' => $user->id,
+                    'job_title_id'  => 31,
+                ]);
+
+                DB::table('event_attend_request')->insert([
+                    'code_number' => $user->id . $company->event_id . rand(1000, 9999),
+                    'event_id'  =>   $company->event_id,
+                    'user_id'   => $user->id,
+                    'status_id' => 5
+                ]);
+            }
+
+
             DB::commit();
 
             return redirect(adminUrl('company-user/' . $user->company_id))->with('create', 'تمت اضافة المنظم بنجاح');

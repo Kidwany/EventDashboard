@@ -69,9 +69,9 @@ class GroupsController extends Controller
             ->pluck('member_id')->toArray();
 
 
-         $users = User::with('image', 'city')
+        $users = User::with('image', 'city')
             ->orderBy('created_at', 'desc')
-            ->where('role_id', 2)
+            ->whereIn('role_id', [2, 5])
             ->whereIn('id', $requests)
             ->whereIn('id', array_diff($requests, $groups_members))
             ->get();
@@ -81,9 +81,11 @@ class GroupsController extends Controller
         return view('dashboard.groups.create', compact('event', 'users', 'colors', 'zones'));
     }
 
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Kreait\Firebase\Exception\ApiException
      */
     public function store(Request $request)
     {
@@ -231,10 +233,11 @@ class GroupsController extends Controller
     }
 
 
-
     /**
+     * @param $id
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Kreait\Firebase\Exception\ApiException
      */
     public function update($id, Request $request)
     {

@@ -42,7 +42,7 @@ class Company extends Model
      */
     public function members()
     {
-        return $this->hasMany(User::class, 'company_id');
+        return $this->hasMany(User::class, 'company_id')->where('role_id', 5);
     }
 
     /**

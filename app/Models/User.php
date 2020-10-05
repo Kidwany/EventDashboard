@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @property integer $id
  * @property integer $image_id
+ * @property integer $parent_id
  * @property integer $created_by
  * @property integer $company_id
  * @property integer $category_id
