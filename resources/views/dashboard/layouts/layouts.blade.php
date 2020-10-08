@@ -117,6 +117,7 @@
 <script src="{{assetPath('dashboard/assets/js/pages/blog/blog.js')}}"></script>
 
 @yield('customizedScript')
+@yield('ajax')
 
 
 

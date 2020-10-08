@@ -211,4 +211,20 @@ class User extends Authenticatable
     {
         return $this->belongsTo(CompanyCategories::class, 'category_id')->withDefault();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function member()
+    {
+        return $this->hasOne(UserGroupMembers::class, 'member_id')->with('group')->withDefault();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function break()
+    {
+        return $this->hasOne(UserRest::class, 'user_id')->withDefault();
+    }
 }

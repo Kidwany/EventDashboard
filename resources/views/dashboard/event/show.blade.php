@@ -51,6 +51,8 @@
                                 <li><a href="{{adminUrl('tools/' . $event->id)}}"><i class="zmdi zmdi-speaker"></i>المعدات</a></li>
                                 <li><a href="{{adminUrl('finance/' . $event->id)}}"><i class="zmdi zmdi-money"></i>البيانات المالية</a></li>
                                 <li><a href="{{adminUrl('company/' . $event->id)}}"><i class="zmdi zmdi-home"></i>الشركات</a></li>
+                                <li><a href="{{adminUrl('guardian-ship/' . $event->id)}}"><i class="zmdi zmdi-plus-box"></i>العهدة</a></li>
+                                <li><a href="{{adminUrl('break/' . $event->id)}}"><i class="zmdi zmdi-local-cafe"></i>الإستراحة</a></li>
                             </ul>
                         </div>
 

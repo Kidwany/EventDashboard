@@ -127,6 +127,19 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('guardian-ship/{id}/print', 'GuardianShipController@printQr');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*:::::::::::::::::::::::::::::::::  Break Routes  :::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('break/{event_id}', 'BreakController@index');
+    Route::get('break/{event_id}/create', 'BreakController@create');
+    Route::post('break/{event_id}/store', 'BreakController@store');
+    Route::get('break/{id}/edit', 'BreakController@edit');
+    Route::patch('break/{id}/update', 'BreakController@update');
+    Route::delete('break/{id}/delete', 'BreakController@destroy');
+    Route::get('break/{id}/print', 'BreakController@printQr');
+    Route::get('break/{id}/add-break-to-user/{user_id}', 'BreakController@getBreakPage');
+    Route::post('break/add-break-to-user', 'BreakController@addBreakToUser');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::  Gates Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('gates/{event_id}', 'GatesController@index');
