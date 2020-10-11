@@ -207,7 +207,7 @@ class BreakController extends Controller
 
         $event = Event::findOrFail($check_member->event_id);
 
-        return view('dashboard.break.edit', compact('member', 'event', 'user'));
+        return view('dashboard.break.edit', compact( 'event', 'user'));
     }
 
     public function addBreakToUser(Request $request)

@@ -1,9 +1,11 @@
 <?php
 
-
-namespace App\Classes;
+namespace App\Http\Controllers;
 
 use App\Models\Consultation;
+use App\Models\Balance;
+use App\Models\DoctorAppointment;
+use Illuminate\Http\Request;
 use Paypal\Rest\ApiContext;
 use Illuminate\Support\Facades\Auth;
 use Paypal\Auth\OAuthTokenCredential;
@@ -19,26 +21,13 @@ use PayPal\Api\Transaction;
 use PayPal\Api\PaymentExecution;
 use PHPUnit\TextUI\ResultPrinter;
 
-
-class PaypalPayment
+class PaymentController extends Controller
 {
-
-    /**
-     * @var ApiContext
-     */
     private $apiContext;
-    /**
-     * @var \Illuminate\Config\Repository|mixed
-     */
     private $secret;
-    /**
-     * @var \Illuminate\Config\Repository|mixed
-     */
     private $client_id;
+    private $consultationId;
 
-    /**
-     * PaypalPayment constructor.
-     */
     public function __construct()
     {
         if (config('paypal.settings.mode') == 'live')
@@ -58,24 +47,18 @@ class PaypalPayment
             )
         );
         $this->apiContext->setConfig(config('paypal.settings'));
+        //$this->apiContext = new ApiContext(new OAuthTokenCredential($this->client_id, $this->secret));
+        //$this->apiContext->setConfig(config('paypal.settings'));
     }
 
-    /**
-     * @return ApiContext
-     */
-    public function getApiContext(): ApiContext
+    public function payWithPayPal(Request $request)
     {
-        return $this->apiContext;
-    }
+        $input = $request->all();
 
-
-    /**
-     * @param $name
-     * @param $price
-     * @return null|string
-     */
-    public function payWithPayPal($name, $price)
-    {
+        $price = $request->price;
+        $name = $request->title;
+        $consultationId = $request->consultation_id;
+        $this->consultationId = $request->consultation_id;
 
         //Set Payer
         $payer = new Payer();
@@ -84,18 +67,18 @@ class PaypalPayment
         //Items
         $item1 = new Item();
         $item1->setName($name)
-            ->setCurrency('USD')
+            ->setCurrency('EUR')
             ->setQuantity(1)
             ->setSku("123123") // Similar to `item_number` in Classic API
-            ->setPrice($price * 0.27);
+            ->setPrice($price);
 
         //Item List
         $itemList = new ItemList();
         $itemList->setItems(array($item1));
 
         $amount = new Amount();
-        $amount->setCurrency("USD")
-            ->setTotal($price * 0.27);
+        $amount->setCurrency("EUR")
+            ->setTotal($price);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
@@ -104,10 +87,10 @@ class PaypalPayment
             ->setInvoiceNumber(uniqid());
 
 
+        //$baseUrl = url();
         $redirectUrls = new RedirectUrls();
-
-        $redirectUrls->setReturnUrl("http://localhost/event_dashboard/public/package/subscription-status")
-            ->setCancelUrl("http://localhost/event_dashboard/public/package/subscription-cancelled");
+        $redirectUrls->setReturnUrl("https://www.konsilmed.com/status")
+            ->setCancelUrl("https://www.konsilmed.com/cancelled");
 
 
         $payment = new Payment();
@@ -115,6 +98,7 @@ class PaypalPayment
             ->setPayer($payer)
             ->setRedirectUrls($redirectUrls)
             ->setTransactions(array($transaction));
+
 
         try {
             $payment->create($this->apiContext);
@@ -125,8 +109,37 @@ class PaypalPayment
 
         $approvalUrl = $payment->getApprovalLink();
 
-        return  $approvalUrl;
+        return redirect($approvalUrl);
 
     }
 
+    public function status(Request $request)
+    {
+        if (empty($request->input('PayerID') || empty($request->input('token')) ))
+        {
+            return redirect()->back()->with('exception', 'Payment Failed');
+        }
+
+        $paymentId = $request->get('paymentId');
+        $payment = Payment::get($paymentId, $this->apiContext);
+
+        $execution = new PaymentExecution();
+        $execution->setPayerId($request->input('PayerID'));
+
+        $result = $payment->execute($execution, $this->apiContext);
+
+        if ($result->getState() == 'approved')
+        {
+            return redirect(adminUrl('package'))->with('create', 'تمت عملية الدفع بنجاح انت الان مشترك في الباقة');
+        }
+
+        echo 'Failed Payment Process';
+        die($result);
+
+    }
+
+    public function cancelled()
+    {
+        return redirect('package')->with('exception', 'حدث خطأ في عملية الدفع ... من فضلك حاول مرة اخرى');
+    }
 }

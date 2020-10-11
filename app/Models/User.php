@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -226,5 +227,12 @@ class User extends Authenticatable
     public function break()
     {
         return $this->hasOne(UserRest::class, 'user_id')->withDefault();
+    }
+
+    public function is_viewed()
+    {
+        return $this
+            ->hasOne(ProfileViews::class, 'sp_id')
+            ->where('company_id', Auth::user()->id);
     }
 }

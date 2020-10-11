@@ -228,6 +228,39 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2><strong>اضف ملفات الفعالية </strong></h2>
+                            </div>
+                            <div class="body">
+                                <div class="row">
+
+                                    <div class="col-lg-6 col-md-12 col-sm-3">
+                                        <label for="email_address">مرفقات الفعالية</label>
+                                        <div class="form-group">
+                                            <input required type="file" name="attaches" id="email_address" class="form-control" placeholder="">
+                                            <span class="text-muted">قم برفع ملف مضغوط من النوع ZIP يحتوي على المرفقات الاتية
+                                                <ul>
+                                                    <li>عقد ايجار المرفق</li>
+                                                    <li>رسم توضيحي للموقع</li>
+                                                    <li>خطة الأمن و السلامة</li>
+                                                    <li>خطة التعامل مع الطوارئ</li>
+                                                    <li>خطة ادارة الحشود</li>
+                                                    <li>المرافق الخاصة بذوي الإحتياجات الخاصة</li>
+                                                    <li>الميزانية التفصيلية</li>
+                                                    <li>خطاب التفويض</li>
+                                                    <li>شعار الفعالية</li>
+                                                    <li>التصاميم التسويقية للفعالية</li>
+                                                    <li>المرافق و الخدمات المساندة (مثال: المصلى، العيادة، الإستراحة، دورة المياه، محطة المفقودات)</li>
+                                                </ul>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-lg-12 col-md-12 col-sm-12" >
                         <div class="card">
                             <div class="header">

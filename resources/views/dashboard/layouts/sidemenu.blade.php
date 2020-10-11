@@ -31,6 +31,14 @@
                     <li><a href="{{adminUrl('admin/create')}}">مستخدم جديد</a></li>
                 </ul>
             </li>
+
+            <li>
+                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-tag"></i><span>الباقات </span></a>
+                <ul class="ml-menu">
+                    <li><a href="{{adminUrl('package')}}">شاهد الباقات</a></li>
+                    <li><a href="{{adminUrl('package/consumption')}}">تابع استهلاكك</a></li>
+                </ul>
+            </li>
             {{--<li>
                 <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-car-wash"></i><span>المغاسل</span></a>
                 <ul class="ml-menu">

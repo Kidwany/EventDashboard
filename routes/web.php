@@ -39,6 +39,7 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('applicants/{event_id}', 'ApplicantsController@index');
     Route::get('applicants/accept/{id}', 'ApplicantsController@acceptRequest');
+    Route::post('applicants/accept/{id}/user-page', 'ApplicantsController@acceptRequestFromUserPage');
     Route::get('applicants/reject/{id}', 'ApplicantsController@rejectRequest');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -184,6 +185,15 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     /*::::::::::::::::::::::::::::::::  Finance Routes  ::::::::::::::::::::::::::*/
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     Route::get('finance/{event_id}', 'FinanceController@index');
+
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::  Package Routes  ::::::::::::::::::::::::::*/
+    /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    Route::get('package', 'PackageController@index');
+    Route::get('package/consumption', 'PackageController@show');
+    Route::post('package/subscribe', 'PackageController@subscribe')->name('package-subscribe');
+    Route::get('package/subscription-cancelled', 'PaypalController@cancelled')->name('cancelled');
+    Route::get('package/subscription-status', 'PaypalController@status')->name('status');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*:::::::::::::::::::::::::::  Expected Expenses Routes  :::::::::::::::::::::*/

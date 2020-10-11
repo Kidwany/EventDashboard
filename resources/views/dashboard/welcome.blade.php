@@ -83,6 +83,7 @@
     <div class="container-fluid">
         <!-- Basic Examples -->
         <div class="row clearfix">
+            @include('dashboard.layouts.messages')
             <div class="col-lg-12">
                 <div class="card">
                     <div class="header">

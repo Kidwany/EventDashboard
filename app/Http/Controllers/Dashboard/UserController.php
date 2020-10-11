@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\CheckPackage;
 use App\Classes\Upload;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
@@ -10,7 +11,9 @@ use App\Models\ServiceProviderExperience;
 use App\Models\UserDocuments;
 use App\Models\UserPaymentInfo;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\JobTitle;
 use App\Models\ServiceProviderJobs;
@@ -61,14 +64,56 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = \App\Models\User::with('serviceProviderJobs')->find($id);
-        $events = Event::with('serviceProvider')->where('sp_id', $id)->get();
-        $total_user_events = Event::with('serviceProvider')->where('sp_id', $id)->count();
-        $sp_experience = ServiceProviderExperience::where('user_id', $id)->get();
-        $sp_doc = UserDocuments::with('identityImage')->where('user_id', $id)->first();
-        $requests = EventAttendRequest::where('user_id', $id)->count();
-        $user_payment = UserPaymentInfo::where('user_id', $id)->first();
-        return view('dashboard.user.show', compact('user', 'events', 'total_user_events', 'sp_experience', 'sp_doc', 'requests', 'user_payment'));
+        $user = \App\Models\User::findOrFail(Auth::user()->id);
+        if (Auth::user()->role_id == 3)
+        {
+            if (Auth::user()->package_id != null && CheckPackage::checkPackageConsumption()->total_views > 0)
+            {
+                // Check if Profile Viewed Before
+                $view = DB::table('profile_views')->where('sp_id', $id)->where('company_id', $user->id)->first();
+                if (!$view)
+                {
+                    // Mark Profile As Viewed
+                    DB::table('profile_views')->insert([
+                        'sp_id' => $id,
+                        'company_id' => Auth::user()->id,
+                        'created_at' => Carbon::now(+3),
+                        'updated_at' => Carbon::now(+3)
+                    ]);
+                    DB::table('total_package_consumption')
+                        ->where('organization_id', Auth::user()->id)
+                        ->decrement('total_views', 1);
+                }
+            }
+            else
+            {
+                return redirect('/')->with('exception', 'يجب الإشتراك اولا في احد الباقات كي تتمكن من مشاهدة الملف الشخصي للمستخدم');
+            }
+
+            $user = \App\Models\User::with('serviceProviderJobs')->find($id);
+            $events = Event::with('serviceProvider')->where('sp_id', $id)->get();
+            $total_user_events = Event::with('serviceProvider')->where('sp_id', $id)->count();
+            $sp_experience = ServiceProviderExperience::where('user_id', $id)->get();
+            $sp_doc = UserDocuments::with('identityImage')->where('user_id', $id)->first();
+            $requests = EventAttendRequest::where('user_id', $id)->count();
+            $user_payment = UserPaymentInfo::where('user_id', $id)->first();
+            $application = EventAttendRequest
+                    ::where('status_id', 3)->where('id', \request('application_id'))
+                    ->get();
+
+            $acceptedApplication = EventAttendRequest
+                ::where('contract_id', '!=', null)
+                ->orWhere('status_id', 5,9)
+                ->find(\request('application_id'));
+
+            return view('dashboard.user.show', compact('user', 'events', 'total_user_events', 'sp_experience', 'sp_doc', 'requests', 'user_payment', 'application', 'acceptedApplication'));
+        }
+        else
+        {
+            Auth::logout();
+            return redirect('/login')->with('exception', 'عفوا لا يمكنك الدخول');
+        }
+
     }
 
     /**

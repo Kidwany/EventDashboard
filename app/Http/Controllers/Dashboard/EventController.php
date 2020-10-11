@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\CheckPackage;
 use App\Classes\ErrorClass;
 use App\Classes\GenerateQr;
 use App\Classes\Upload;
@@ -54,11 +55,15 @@ class EventController extends Controller
      */
     public function create()
     {
-        $cities = City::all()->where('country_id', 2);
-        $categories = Category::all();
-        $gates_types = GateType::all();
-        $seasons = Season::all();
-        return view('dashboard.event.create', compact('cities', 'categories', 'gates_types', 'seasons'));
+        if (Auth::user()->package_id != null && CheckPackage::checkPackageConsumption()->total_events > 0)
+        {
+            $cities = City::all()->where('country_id', 2);
+            $categories = Category::all();
+            $gates_types = GateType::all();
+            $seasons = Season::all();
+            return view('dashboard.event.create', compact('cities', 'categories', 'gates_types', 'seasons'));
+        }
+        return redirect('/')->with('exception', "يجب الإشتراك اولا في احد الباقات كي تتمكن من انشاء فعالية");
     }
 
 
@@ -84,6 +89,7 @@ class EventController extends Controller
                 'start_time'        => 'required',
                 'end'               => 'required',
                 'end_time'          => 'required',
+                'attaches'          => 'required|mimes:zip,rar',
                 'gate_type_ids.*'   => 'required',
                 'gates_names.*'     => 'required',
             ], [], []);
@@ -99,6 +105,12 @@ class EventController extends Controller
             {
                 // Save Image
                 $event_main_image = Upload::singleUpload($request,'image','uploads/events/','image','image|mimes:jpeg,jpg,png','App\Models\Image');
+            }
+
+            if ($uploadedFile = $request->file('attaches'))
+            {
+                // Save Image
+                $event_attaches = Upload::singleUpload($request,'attaches','uploads/events/attaches/','image','mimes:zip,rar','App\Models\File');
             }
 
 
@@ -124,6 +136,7 @@ class EventController extends Controller
             $event->category_id = $request->category_id;
             $event->image_id = $event_main_image->id;
             $event->location_id = $location->id;
+            $event->attaches_id = $event_attaches->id;
 
             if ($event->save())
             {
