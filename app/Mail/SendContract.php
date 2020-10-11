@@ -23,6 +23,10 @@ class SendContract extends Mailable
      * @var
      */
     protected $event;
+    /**
+     * @var
+     */
+    protected $application_id;
 
 
     /**
@@ -30,12 +34,14 @@ class SendContract extends Mailable
      * @param $contract
      * @param $user
      * @param $event
+     * @param $application_id
      */
-    public function __construct($contract, $user, $event)
+    public function __construct($contract, $user, $event, $application_id)
     {
         $this->contract = $contract;
         $this->user = $user;
         $this->event = $event;
+        $this->application_id = $application_id;
     }
 
     /**
@@ -50,6 +56,7 @@ class SendContract extends Mailable
             ->from('info@hemmtk.com', 'توثيق العقد')
             ->attach($this->contract)
             ->with('user', $this->user)
-            ->with('event', $this->event);
+            ->with('event', $this->event)
+            ->with('application_id', $this->application_id);
     }
 }

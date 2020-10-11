@@ -41,6 +41,8 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
     Route::get('applicants/accept/{id}', 'ApplicantsController@acceptRequest');
     Route::post('applicants/accept/{id}/user-page', 'ApplicantsController@acceptRequestFromUserPage');
     Route::get('applicants/reject/{id}', 'ApplicantsController@rejectRequest');
+    Route::get('contract/{application_id}/verify', 'ApplicantsController@verifyContract');
+    Route::get('verify-contract', 'ApplicantsController@verified');
 
     /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
     /*:::::::::::::::::::::::::::::  Organizers Routes  ::::::::::::::::::::::::::*/

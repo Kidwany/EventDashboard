@@ -16,6 +16,7 @@
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "laravel/ui": "2.4",
+        "paypal/rest-api-sdk-php": "*",
         "simplesoftwareio/simple-qrcode": "~3"
     },
     "require-dev": {

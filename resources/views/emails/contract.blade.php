@@ -208,7 +208,7 @@
                         </p>
                     </div>--}}
 
-                    @component('mail::button', ['url' => url('contract/178/verify')])
+                    @component('mail::button', ['url' => url('contract/'.$application_id.'/verify')])
                         اضغط هنا للتوثيق
                     @endcomponent
 
