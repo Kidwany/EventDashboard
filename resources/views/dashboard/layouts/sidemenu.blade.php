@@ -17,28 +17,30 @@
                 </div>
             </li>
             <li class="active open"><a href="https://www.dashboard.hemmtk.com/"><i class="zmdi zmdi-home"></i><span>الصفحة الرئيسية</span></a></li>
-            <li>
-                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-fire"></i><span>المواسم</span></a>
-                <ul class="ml-menu">
-                    <li><a href="{{adminUrl('season')}}">شاهد جميع المواسم</a></li>
-                    <li><a href="{{adminUrl('season/create')}}"> موسم جديد </a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts"></i><span>المستخدمين </span></a>
-                <ul class="ml-menu">
-                    <li><a href="{{adminUrl('admin')}}">شاهد المستخدمين</a></li>
-                    <li><a href="{{adminUrl('admin/create')}}">مستخدم جديد</a></li>
-                </ul>
-            </li>
+            @if(auth()->user()->is_approved == 1)
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-fire"></i><span>المواسم</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="{{adminUrl('season')}}">شاهد جميع المواسم</a></li>
+                        <li><a href="{{adminUrl('season/create')}}"> موسم جديد </a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts"></i><span>المستخدمين </span></a>
+                    <ul class="ml-menu">
+                        <li><a href="{{adminUrl('admin')}}">شاهد المستخدمين</a></li>
+                        <li><a href="{{adminUrl('admin/create')}}">مستخدم جديد</a></li>
+                    </ul>
+                </li>
 
-            <li>
-                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-tag"></i><span>الباقات </span></a>
-                <ul class="ml-menu">
-                    <li><a href="{{adminUrl('package')}}">شاهد الباقات</a></li>
-                    <li><a href="{{adminUrl('package/consumption')}}">تابع استهلاكك</a></li>
-                </ul>
-            </li>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-tag"></i><span>الباقات </span></a>
+                    <ul class="ml-menu">
+                        <li><a href="{{adminUrl('package')}}">شاهد الباقات</a></li>
+                        <li><a href="{{adminUrl('package/consumption')}}">تابع استهلاكك</a></li>
+                    </ul>
+                </li>
+            @endif
             {{--<li>
                 <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-car-wash"></i><span>المغاسل</span></a>
                 <ul class="ml-menu">

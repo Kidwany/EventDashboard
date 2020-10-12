@@ -36,3 +36,9 @@
         <h6>{{session('exception')}}</h6>
     </div>
 @endif
+
+@if(Session::has('warning'))
+    <div class="alert alert-warning w-100" >
+        <h6>{{session('warning')}}</h6>
+    </div>
+@endif

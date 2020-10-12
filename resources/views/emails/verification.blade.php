@@ -197,7 +197,7 @@
                     <div class="email-desc">
                         <div class="col-md-10">
                             <p class="main-color font-weight-light text-center" style="font-family: 'Almarai', Arial, sans-serif;">
-                                 قم بنسخ كود التفعيل الخاص بحسابك على تطبيق تمرات و ادخله في المكان المخصص في التطبيق
+                                 قم بنسخ كود التفعيل الخاص بحسابك على تطبيق همتك و ادخله في المكان المخصص في التطبيق
                             </p>
                         </div>
                     </div>

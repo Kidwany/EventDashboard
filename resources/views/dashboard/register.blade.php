@@ -40,52 +40,80 @@
         <div class="authentication">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-sm-12">
-                        <form class="card auth_form" action="{{url('admin-login')}}" method="post">
+                    <div class="col-lg-4 col-sm-12" style="height: 200px">
+                        @include('dashboard.layouts.messages')
+                        <form class="card auth_form" method="post" action="{{url('company-register')}}">
                             @csrf
                             <div class="header">
-                                <img class="logo" src="{{asset('general/hemmtk.jpeg')}}" alt="" style="height: auto; width: 80%">
-                                <h5> تسجيل الدخول</h5>
+                                <img class="logo" src="{{asset('general/hemmtk.jpeg')}}" alt="">
+                                <h5>التسجيل كشركة</h5>
+                                <span>انشئ حساب جديد لشركتك</span>
                             </div>
                             <div class="body">
-                                @include('dashboard.layouts.messages')
-
+                                <h6>بيانات صاحب الحساب</h6>
                                 <div class="input-group mb-3">
-                                    <input type="email" name="email" class="form-control" placeholder="ادخل البريد الإلكتروني" required>
+                                    <input required value="{{old('fname')}}" name="fname" type="text" class="form-control" placeholder="الإسم الأول">
                                     <div class="input-group-append">
                                         <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
                                     </div>
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
                                 </div>
+
                                 <div class="input-group mb-3">
-                                    <input type="password" class="form-control" placeholder="ادخل كلمة السر" name="password">
+                                    <input required value="{{old('mname')}}" name="mname" type="text" class="form-control" placeholder="الإسم الأب">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <input required value="{{old('lname')}}" name="lname" type="text" class="form-control" placeholder="الإسم العائلة">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <input required value="{{old('email')}}" name="email" type="text" class="form-control" placeholder="البريد الإلكتروني">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <input required value="{{old('phone')}}" name="phone" type="tel" class="form-control" placeholder="الجوال">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="zmdi zmdi-phone"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <input required name="password" type="password" class="form-control" placeholder="كلمة السر">
                                     <div class="input-group-append">
                                         <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
                                     </div>
-                                    @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
                                 </div>
+
+                                <div class="input-group mb-3">
+                                    <input required name="password_confirmation" type="password" class="form-control" placeholder="تأكيد كلمة السر">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                    </div>
+                                </div>
+
                                 <div class="checkbox">
-                                    <input id="remember_me" type="checkbox" {{ old('remember') ? 'checked' : '' }}>
-                                    <label for="remember_me"> تذكرني</label>
+                                    <input id="remember_me" type="checkbox">
+                                    <label for="remember_me">موافق على سياسة <a href="javascript:void(0);">الشروط و الأحكام</a></label>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light"> تسجيل الدخول</button>
+                                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">التسجيل</button>
                                 <div class="signin_with mt-3">
-                                    <a class="link" href="{{route('register')}}">حساب جديد</a>
+                                    <a class="link" href="{{route('login')}}">هل لديك حساب؟</a>
                                 </div>
                             </div>
                         </form>
                         <div class="copyright text-center">
                             &copy;
                             <script>document.write(new Date().getFullYear())</script>,
-                            <span>جميع الحقوق محفوظة <a href="#" target="_blank">همتك</a></span>
+                            <span>جميع الحقوق محفوظة <a href="https://hemmtk.com" target="_blank">همتك</a></span>
                         </div>
                     </div>
                     <div class="col-lg-8 col-sm-12">
