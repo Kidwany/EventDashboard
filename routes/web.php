@@ -107,6 +107,17 @@ Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
         Route::delete('company-user/{id}/delete', 'CompanyUserController@destroy');
 
         /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+        /*::::::::::::::::::::::::::::: Event Company Group ::::::::::::::::::::::::::*/
+        /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+        //Route::get('company-group', 'CompanyGroupController@index');
+        Route::get('company-group/{id}', 'CompanyGroupController@index');
+        Route::get('company-group/{id}/create', 'CompanyGroupController@create');
+        Route::post('company-group/store', 'CompanyGroupController@store');
+        Route::get('company-group/{id}/edit', 'CompanyGroupController@edit');
+        Route::patch('company-group/{id}/update', 'CompanyGroupController@update');
+        Route::delete('company-group/{id}/delete', 'CompanyGroupController@destroy');
+
+        /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
         /*::::::::::::::::::::::::::::::::::  Tools Routes  ::::::::::::::::::::::::::*/
         /*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
         Route::get('tools/{event_id}', 'ToolsController@index');

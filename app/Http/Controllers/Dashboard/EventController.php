@@ -73,88 +73,97 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $v = Validator::make($request->all(), [
-                'title'             => 'required',
-                'description'       => 'required',
-                'budget'            => 'required',
-                'floors'            => 'required|int',
-                'address'           => 'required|max:191',
-                'location'          => 'required',
-                'image'             => 'required',
-                'images.*'          => 'required',
-                'city_id'           => 'required|int',
-                'category_id'       => 'required|int',
-                'start'             => 'required',
-                'start_time'        => 'required',
-                'end'               => 'required',
-                'end_time'          => 'required',
-                'attaches'          => 'required|mimes:zip,rar',
-                'gate_type_ids.*'   => 'required',
-                'gates_names.*'     => 'required',
-            ], [], []);
+        if (Auth::user()->package_id != null && CheckPackage::checkPackageConsumption()->total_events > 0)
+        {
+            try{
+                $v = Validator::make($request->all(), [
+                    'title'             => 'required',
+                    'description'       => 'required',
+                    'budget'            => 'required',
+                    'floors'            => 'required|int',
+                    'address'           => 'required|max:191',
+                    'location'          => 'required',
+                    'image'             => 'required',
+                    'images.*'          => 'required',
+                    'city_id'           => 'required|int',
+                    'category_id'       => 'required|int',
+                    'start'             => 'required',
+                    'start_time'        => 'required',
+                    'end'               => 'required',
+                    'end_time'          => 'required',
+                    'attaches'          => 'required|mimes:zip,rar',
+                    'gate_type_ids.*'   => 'required',
+                    'gates_names.*'     => 'required',
+                ], [], []);
 
-            if ($v->fails())
-            {
-                return redirect()->back()->with('errors', $v->errors())->withInput();
+                if ($v->fails())
+                {
+                    return redirect()->back()->with('errors', $v->errors())->withInput();
+                }
+
+                DB::beginTransaction();
+
+                if ($uploadedFile = $request->file('image'))
+                {
+                    // Save Image
+                    $event_main_image = Upload::singleUpload($request,'image','uploads/events/','image','image|mimes:jpeg,jpg,png','App\Models\Image');
+                }
+
+                if ($uploadedFile = $request->file('attaches'))
+                {
+                    // Save Image
+                    $event_attaches = Upload::singleUpload($request,'attaches','uploads/events/attaches/','image','mimes:zip,rar','App\Models\File');
+                }
+
+
+                // Save Location
+                $location = \App\Models\Location::create(['url' => $request->location]);
+
+                // Save Event
+                $event = new Event();
+                $event->season_id = $request->season_id;
+                $event->title = $request->title;
+                $event->budget = $request->budget;
+                $event->organization_id = Auth::user()->id;
+                $event->slug = $request->title;
+                $event->description = $request->description;
+                $event->event_date = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
+                $event->event_start = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
+                $event->event_end = date('Y-m-d h:i:s', strtotime($request->end . ' ' . $request->end_time));
+                $event->floors = $request->floors;
+                $event->status_id = 3;
+                $event->country_id = 2;
+                $event->city_id = $request->city_id;
+                $event->place = $request->address;
+                $event->category_id = $request->category_id;
+                $event->image_id = $event_main_image->id;
+                $event->location_id = $location->id;
+                $event->attaches_id = $event_attaches->id;
+
+                if ($event->save())
+                {
+                    \event(new EventCreatedEvent($event, $request, $event->image_id, $event->location_id));
+                }
+
+                Event::where('id',$event->id)->update(['evqrin'=>GenerateQr::generateQrCode(2,"hemmtk-1,".$event->id)]);
+                Event::where('id',$event->id)->update(['evqrout'=>GenerateQr::generateQrCode(3,"hemmtk-2,".$event->id)]);
+
+                DB::table('total_package_consumption')
+                    ->where('organization_id', Auth::user()->id)
+                    ->decrement('total_events', 1);
+
+                DB::commit();
+
+                return redirect(url('event'))->with('create', 'تم اضافة الفعالية بنجاح')->withInput($request->input());
             }
-
-            DB::beginTransaction();
-
-            if ($uploadedFile = $request->file('image'))
-            {
-                // Save Image
-                $event_main_image = Upload::singleUpload($request,'image','uploads/events/','image','image|mimes:jpeg,jpg,png','App\Models\Image');
+            catch (\Exception $exception){
+                $error = new ErrorClass();
+                $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
+                return redirect()->back()->with('exception', 'خطأ في حفظ البيانات')->withInput($request->input());
             }
-
-            if ($uploadedFile = $request->file('attaches'))
-            {
-                // Save Image
-                $event_attaches = Upload::singleUpload($request,'attaches','uploads/events/attaches/','image','mimes:zip,rar','App\Models\File');
-            }
-
-
-            // Save Location
-            $location = \App\Models\Location::create(['url' => $request->location]);
-
-            // Save Event
-            $event = new Event();
-            $event->season_id = $request->season_id;
-            $event->title = $request->title;
-            $event->budget = $request->budget;
-            $event->organization_id = Auth::user()->id;
-            $event->slug = $request->title;
-            $event->description = $request->description;
-            $event->event_date = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
-            $event->event_start = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
-            $event->event_end = date('Y-m-d h:i:s', strtotime($request->end . ' ' . $request->end_time));
-            $event->floors = $request->floors;
-            $event->status_id = 3;
-            $event->country_id = 2;
-            $event->city_id = $request->city_id;
-            $event->place = $request->address;
-            $event->category_id = $request->category_id;
-            $event->image_id = $event_main_image->id;
-            $event->location_id = $location->id;
-            $event->attaches_id = $event_attaches->id;
-
-            if ($event->save())
-            {
-                \event(new EventCreatedEvent($event, $request, $event->image_id, $event->location_id));
-            }
-
-            Event::where('id',$event->id)->update(['evqrin'=>GenerateQr::generateQrCode(2,"hemmtk-1,".$event->id)]);
-            Event::where('id',$event->id)->update(['evqrout'=>GenerateQr::generateQrCode(3,"hemmtk-2,".$event->id)]);
-
-            DB::commit();
-
-            return redirect(url('event'))->with('create', 'تم اضافة الفعالية بنجاح')->withInput($request->input());
         }
-        catch (\Exception $exception){
-            $error = new ErrorClass();
-            $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
-            return redirect()->back()->with('exception', 'خطأ في حفظ البيانات')->withInput($request->input());
-        }
+        return redirect('/')->with('exception', "يجب الإشتراك اولا في احد الباقات كي تتمكن من انشاء فعالية");
+
     }
 
     /**

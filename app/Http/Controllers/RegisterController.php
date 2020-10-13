@@ -123,6 +123,7 @@ class RegisterController extends Controller
             $user = User::findOrFail(auth()->user()->id);
             $user->image_id     = $personal_image->id;
             $user->city_id      = $request->city_id;
+            $user->country_id   = 2;
             $user->address      = $request->company_address;
             $user->is_docs_uploaded = 0;
             $user->save();
