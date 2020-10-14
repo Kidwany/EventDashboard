@@ -2,13 +2,15 @@
 
 
 namespace App\Classes;
+
 use App\Models\Consultation;
-use Illuminate\Http\Request;
 use Paypal\Rest\ApiContext;
+use Illuminate\Support\Facades\Auth;
 use Paypal\Auth\OAuthTokenCredential;
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Item;
+use App\Models\PaymentSetting;
 use PayPal\Api\ItemList;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
@@ -18,28 +20,27 @@ use PayPal\Api\PaymentExecution;
 use PHPUnit\TextUI\ResultPrinter;
 
 
-abstract class PaypalPayment
+class PaypalPayment
 {
 
+    /**
+     * @var ApiContext
+     */
     private $apiContext;
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
     private $secret;
+    /**
+     * @var \Illuminate\Config\Repository|mixed
+     */
     private $client_id;
-    private $consultationId;
-    private $price;
-    private $paymentTitle;
-    private $currency;
-    private $statusUrl;
-    private $cancelUrl;
 
-    public function __construct($consultationId, $price, $currency, $paymentTitle, $statusUrl, $cancelUrl)
+    /**
+     * PaypalPayment constructor.
+     */
+    public function __construct()
     {
-        $this->price = $price;
-        $this->currency = $currency;
-        $this->paymentTitle = $paymentTitle;
-        $this->consultationId = $consultationId;
-        $this->statusUrl = $statusUrl;
-        $this->cancelUrl = $cancelUrl;
-
         if (config('paypal.settings.mode') == 'live')
         {
             $this->client_id = config('paypal.live_client_id');
@@ -57,17 +58,24 @@ abstract class PaypalPayment
             )
         );
         $this->apiContext->setConfig(config('paypal.settings'));
-        //$this->apiContext = new ApiContext(new OAuthTokenCredential($this->client_id, $this->secret));
-        //$this->apiContext->setConfig(config('paypal.settings'));
+    }
+
+    /**
+     * @return ApiContext
+     */
+    public function getApiContext(): ApiContext
+    {
+        return $this->apiContext;
     }
 
 
-    public function payWithPayPal(Request $request)
+    /**
+     * @param $name
+     * @param $price
+     * @return null|string
+     */
+    public function payWithPayPal($name, $price)
     {
-        $price = $request->price;
-        $name = $request->title;
-        $consultationId = $request->consultation_id;
-        $this->consultationId = $request->consultation_id;
 
         //Set Payer
         $payer = new Payer();
@@ -76,18 +84,18 @@ abstract class PaypalPayment
         //Items
         $item1 = new Item();
         $item1->setName($name)
-            ->setCurrency('EUR')
+            ->setCurrency('USD')
             ->setQuantity(1)
             ->setSku("123123") // Similar to `item_number` in Classic API
-            ->setPrice($price);
+            ->setPrice($price * 0.27);
 
         //Item List
         $itemList = new ItemList();
         $itemList->setItems(array($item1));
 
         $amount = new Amount();
-        $amount->setCurrency("EUR")
-            ->setTotal($price);
+        $amount->setCurrency("USD")
+            ->setTotal($price * 0.27);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
@@ -96,10 +104,10 @@ abstract class PaypalPayment
             ->setInvoiceNumber(uniqid());
 
 
-        //$baseUrl = url();
         $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl("http://localhost/conzil/public/status")
-            ->setCancelUrl("http://localhost/conzil/public/cancelled");
+
+        $redirectUrls->setReturnUrl("http://localhost/event_dashboard/public/package/subscription-status")
+            ->setCancelUrl("http://localhost/event_dashboard/public/package/subscription-cancelled");
 
 
         $payment = new Payment();
@@ -108,12 +116,8 @@ abstract class PaypalPayment
             ->setRedirectUrls($redirectUrls)
             ->setTransactions(array($transaction));
 
-
         try {
             $payment->create($this->apiContext);
-            $consultation = Consultation::find($consultationId);
-            $consultation->status_id = 14;
-            $consultation->save();
 
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             die($ex);
@@ -121,11 +125,8 @@ abstract class PaypalPayment
 
         $approvalUrl = $payment->getApprovalLink();
 
-        return redirect($approvalUrl);
+        return  $approvalUrl;
+
     }
-
-    abstract function status();
-
-    abstract function cancelled();
 
 }

@@ -4,9 +4,12 @@
 @endsection
 
 @section('customizedScript')
-
-
-
+    <script>
+        function notSubscribed() {
+            $('#notification').empty();
+            $('#notification').append('<div class="alert alert-warning" style="direction: rtl">يجب الإشتراك في احد الباقات كي تتمكن من مشاهدة بيانات الطلب ... <a target="_blank" href="{{adminUrl('package')}}"> اضغط هنا للإشتراك</a> </div>').show().fadeIn(2000);
+        }
+    </script>
 @endsection
 
 @section('content')
@@ -37,6 +40,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         @include('dashboard.layouts.messages')
+                        <div id="notification"></div>
                         <div class="header">
                             <h2><strong>قائمة </strong> بطلبات الإنضمام </h2>
                         </div>
@@ -83,9 +87,24 @@
                                                 </td>
                                                 <td>{{$applicant->created_at}}</td>
                                                 <td style="display: flex">
-                                                    <a target="_blank" href="{{adminUrl('user/' . $applicant->user->id)}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
-                                                    <a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$applicant->id}}" data-color="red"><i class="zmdi zmdi-block"></i> </a>
-                                                    <a href="#" class="btn bg-success waves-effect btn-sm" data-toggle="modal" data-target="#accept{{$applicant->id}}" data-color="green"><i class="zmdi zmdi-check"></i> </a>
+                                                    @if(\Auth::user()->package_id)
+                                                        @if(\App\Classes\CheckPackage::checkPackageConsumption()->total_views > 0)
+                                                            <a target="_blank" href="{{adminUrl('user/' . $applicant->user->id . '?application_id=' . $applicant->id . '&event_id=' . $event->id)}}" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
+                                                            @if($applicant->user->is_viewed)
+                                                                {{--<a href="#" class="btn bg-red waves-effect btn-sm" data-toggle="modal" data-target="#delete{{$applicant->id}}" data-color="red"><i class="zmdi zmdi-block"></i> </a>
+                                                                <a href="#" class="btn bg-success waves-effect btn-sm" data-toggle="modal" data-target="#accept{{$applicant->id}}" data-color="green"><i class="zmdi zmdi-check"></i> </a>--}}
+                                                            @endif
+                                                        @endif
+                                                        @if(\App\Classes\CheckPackage::checkPackageConsumption()->total_views == 0)
+                                                        <a onclick="notSubscribed()" disabled="" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
+                                                        {{--<a onclick="notSubscribed()" disabled="" href="#" class="btn bg-red waves-effect btn-sm"  data-color="red"><i class="zmdi zmdi-block"></i> </a>
+                                                        <a onclick="notSubscribed()" disabled="" href="#" class="btn bg-success waves-effect btn-sm" data-color="green"><i class="zmdi zmdi-check"></i> </a>--}}
+                                                        @endif
+                                                        @else
+                                                        <a onclick="notSubscribed()" disabled="" class="btn btn-primary btn-sm"><i class="zmdi zmdi-eye"></i> </a>
+                                                        {{--<a onclick="notSubscribed()" disabled="" href="#" class="btn bg-red waves-effect btn-sm"  data-color="red"><i class="zmdi zmdi-block"></i> </a>
+                                                        <a onclick="notSubscribed()" disabled="" href="#" class="btn bg-success waves-effect btn-sm" data-color="green"><i class="zmdi zmdi-check"></i> </a>--}}
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

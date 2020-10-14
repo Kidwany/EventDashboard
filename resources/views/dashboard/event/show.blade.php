@@ -39,15 +39,20 @@
                             <ul class="nav">
 
                                 <li class="active"><a href="{{adminUrl('applicants/' . $event->id)}}"><i class="zmdi zmdi-inbox"></i>الطلبات<span class="badge badge-primary">{{$applications}}</span></a></li>
+                                <li><a href="{{adminUrl('zones/' . $event->id)}}"><i class="zmdi zmdi-map"></i>المناطق</a></li>
                                 <li><a href="{{adminUrl('groups/' . $event->id)}}"><i class="zmdi zmdi-group-work"></i>المجموعات</a></li>
                                 <li><a href="{{adminUrl('floors/' . $event->id)}}"><i class="zmdi zmdi-badge-check"></i>الادوار </a></li>
-                                <li><a href="{{adminUrl('gates/' . $event->id)}}"><i class="zmdi zmdi-badge-check"></i>البوابات </a></li>
+                                <li><a href="{{adminUrl('gates/' . $event->id)}}"><i class="zmdi zmdi-arrow-left"></i>البوابات </a></li>
                                 <li><a href="{{adminUrl('organizers/' . $event->id)}}"><i class="zmdi zmdi-accounts"></i>المنظمين<span class="badge badge-info">{{$organizers}}</span></a></li>
                                 {{--<li><a href="javascript:void(0);"><i class="zmdi zmdi-email"></i>الصلاحيات</a></li>
                                 <li><a href="javascript:void(0);"><i class="zmdi zmdi-alert-circle"></i>المشرفين</a></li>--}}
                                 <li><a href="{{adminUrl('tasks/' . $event->id)}}"><i class="zmdi zmdi-fire"></i>المهام<span class="badge badge-danger">{{$tasks}}</span></a></li>
                                 <li><a href="{{adminUrl('tracking/' . $event->id)}}"><i class="zmdi zmdi-fire"></i>التتبع</a></li>
                                 <li><a href="{{adminUrl('tools/' . $event->id)}}"><i class="zmdi zmdi-speaker"></i>المعدات</a></li>
+                                <li><a href="{{adminUrl('finance/' . $event->id)}}"><i class="zmdi zmdi-money"></i>البيانات المالية</a></li>
+                                <li><a href="{{adminUrl('company/' . $event->id)}}"><i class="zmdi zmdi-home"></i>الشركات</a></li>
+                                <li><a href="{{adminUrl('guardian-ship/' . $event->id)}}"><i class="zmdi zmdi-plus-box"></i>العهدة</a></li>
+                                <li><a href="{{adminUrl('break/' . $event->id)}}"><i class="zmdi zmdi-local-cafe"></i>الإستراحة</a></li>
                             </ul>
                         </div>
 

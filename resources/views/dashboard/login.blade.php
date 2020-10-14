@@ -77,6 +77,9 @@
                                     <label for="remember_me"> تذكرني</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block waves-effect waves-light"> تسجيل الدخول</button>
+                                <div class="signin_with mt-3">
+                                    <a class="link" href="{{route('register')}}">حساب جديد</a>
+                                </div>
                             </div>
                         </form>
                         <div class="copyright text-center">

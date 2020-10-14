@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Classes\ErrorClass;
+use App\Classes\Upload;
 use App\Classes\UserSetting;
 use App\Http\Controllers\Controller;
+use App\Mail\SendContract;
 use App\Models\Event;
 use App\Models\EventAttendRequest;
 use App\Models\ServiceProviderExperience;
@@ -14,6 +16,7 @@ use App\Models\UserPaymentInfo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
@@ -66,6 +69,11 @@ class ApplicantsController extends Controller
         return view('dashboard.applicants.show', compact('user', 'events', 'total_user_events', 'sp_experience', 'sp_doc', 'requests', 'user_payment'));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|string
+     * @throws \Kreait\Firebase\Exception\ApiException
+     */
     public function acceptRequest($id)
     {
         try
@@ -102,6 +110,66 @@ class ApplicantsController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|string
+     * @throws \Kreait\Firebase\Exception\ApiException
+     */
+    public function acceptRequestFromUserPage(Request $request, $id)
+    {
+        try
+        {
+
+            $eventAttendRequest = EventAttendRequest::findOrFail($id);
+            if ($uploadedFile = $request->file('contract'))
+            {
+                // Save Contract
+                $contract = Upload::singleUpload($request,'contract','uploads/applicants/contracts/','image','mimes:pdf,doc,docx,png,jpg,jpeg','App\Models\File');
+            }
+            $eventAttendRequest->contract_id  = $contract->id;
+            $eventAttendRequest->status_id  = 7;
+            $eventAttendRequest->verification_no  = $id . '-' . $eventAttendRequest->event_id . '-' . $eventAttendRequest->user_id . '-' . time();
+            $eventAttendRequest->save();
+
+            $evenTitle=Event::where('id',$eventAttendRequest->event_id)->select('title')->firstOrFail();
+            $user = User::findOrFail($eventAttendRequest->user_id);
+            Mail::to($user->email)->send(new SendContract($contract->url, $user, $evenTitle, $id));
+
+            DB::commit();
+            $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/hemmtk-firebase-adminsdk-gufet-035d61ef62.json');
+            $firebase = (new Factory)
+                ->withServiceAccount($serviceAccount)
+                ->withDatabaseUri('https://hemmtk.firebaseio.com')
+                ->create();
+            $database = $firebase->getDatabase();
+            //$evenTitle=Event::where('id',$eventAttendRequest->event_id)->select('title')->firstOrFail();
+            if(!empty($eventAttendRequest)){
+
+                $database
+                    ->getReference('Notifications/'.$eventAttendRequest->user_id)
+                    ->push([
+                        'body' => 'تم قبول طلبك للانضمام لفاعليه '.$evenTitle->title ,
+                        'createdDate' => Carbon::now(),
+                        'icon'=>URL::to('/dashboard/assets/images/icon/applications.f8d0d384.svg'),
+                        'is_read'=>'false',
+                        'type'=>'application',
+                    ]);
+            }
+
+            return redirect()->back()->with('create', 'تم ارسال العقد للمنظم بنجاح');
+        }
+        catch (\Exception $exception){
+            $error = new ErrorClass();
+            return $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
+        }
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|string
+     * @throws \Kreait\Firebase\Exception\ApiException
+     */
     public function rejectRequest($id)
     {
         try
@@ -136,5 +204,24 @@ class ApplicantsController extends Controller
         }
     }
 
+    /**
+     * @param $application_id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function verifyContract($application_id)
+    {
+        $eventAttendRequest = EventAttendRequest::findOrFail($application_id);
+        $eventAttendRequest->status_id = 5;
+        $eventAttendRequest->save();
+        return  redirect('/verify-contract')->with('create', 'تم توثيق العقد بنجاح .. شكرا لإستخدامك منصة همتك');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function verified()
+    {
+        return view('verifyContract');
+    }
 
 }

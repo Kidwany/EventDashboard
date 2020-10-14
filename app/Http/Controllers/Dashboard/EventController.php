@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Classes\CheckPackage;
 use App\Classes\ErrorClass;
 use App\Classes\GenerateQr;
 use App\Classes\Upload;
@@ -17,6 +18,7 @@ use App\Models\EventGates;
 use App\Models\EventImages;
 use App\Models\GateType;
 use App\Models\Image;
+use App\Models\Season;
 use App\Models\ServiceProviderExperience;
 use App\Models\ServiceProviderTask;
 use App\Models\Task;
@@ -24,6 +26,7 @@ use App\Models\UserDocuments;
 use App\Models\UserGroup;
 use App\Models\UserPaymentInfo;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,10 +55,15 @@ class EventController extends Controller
      */
     public function create()
     {
-        $cities = City::all()->where('country_id', 2);
-        $categories = Category::all();
-        $gates_types = GateType::all();
-        return view('dashboard.event.create', compact('cities', 'categories', 'gates_types'));
+        if (Auth::user()->package_id != null && CheckPackage::checkPackageConsumption()->total_events > 0)
+        {
+            $cities = City::all()->where('country_id', 2);
+            $categories = Category::all();
+            $gates_types = GateType::all();
+            $seasons = Season::all();
+            return view('dashboard.event.create', compact('cities', 'categories', 'gates_types', 'seasons'));
+        }
+        return redirect('/')->with('exception', "يجب الإشتراك اولا في احد الباقات كي تتمكن من انشاء فعالية");
     }
 
 
@@ -65,77 +73,97 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $v = Validator::make($request->all(), [
-                'title'             => 'required',
-                'description'       => 'required',
-                'floors'            => 'required|int',
-                'address'           => 'required|max:191',
-                'location'          => 'required',
-                'image'             => 'required',
-                'images.*'          => 'required',
-                'city_id'           => 'required|int',
-                'category_id'       => 'required|int',
-                'start'             => 'required',
-                'start_time'        => 'required',
-                'end'               => 'required',
-                'end_time'          => 'required',
-                'gate_type_ids.*'   => 'required',
-                'gates_names.*'     => 'required',
-            ], [], []);
+        if (Auth::user()->package_id != null && CheckPackage::checkPackageConsumption()->total_events > 0)
+        {
+            try{
+                $v = Validator::make($request->all(), [
+                    'title'             => 'required',
+                    'description'       => 'required',
+                    'budget'            => 'required',
+                    'floors'            => 'required|int',
+                    'address'           => 'required|max:191',
+                    'location'          => 'required',
+                    'image'             => 'required',
+                    'images.*'          => 'required',
+                    'city_id'           => 'required|int',
+                    'category_id'       => 'required|int',
+                    'start'             => 'required',
+                    'start_time'        => 'required',
+                    'end'               => 'required',
+                    'end_time'          => 'required',
+                    'attaches'          => 'required|mimes:zip,rar',
+                    'gate_type_ids.*'   => 'required',
+                    'gates_names.*'     => 'required',
+                ], [], []);
 
-            if ($v->fails())
-            {
-                return redirect()->back()->with('errors', $v->errors())->withInput();
+                if ($v->fails())
+                {
+                    return redirect()->back()->with('errors', $v->errors())->withInput();
+                }
+
+                DB::beginTransaction();
+
+                if ($uploadedFile = $request->file('image'))
+                {
+                    // Save Image
+                    $event_main_image = Upload::singleUpload($request,'image','uploads/events/','image','image|mimes:jpeg,jpg,png','App\Models\Image');
+                }
+
+                if ($uploadedFile = $request->file('attaches'))
+                {
+                    // Save Image
+                    $event_attaches = Upload::singleUpload($request,'attaches','uploads/events/attaches/','image','mimes:zip,rar','App\Models\File');
+                }
+
+
+                // Save Location
+                $location = \App\Models\Location::create(['url' => $request->location]);
+
+                // Save Event
+                $event = new Event();
+                $event->season_id = $request->season_id;
+                $event->title = $request->title;
+                $event->budget = $request->budget;
+                $event->organization_id = Auth::user()->id;
+                $event->slug = $request->title;
+                $event->description = $request->description;
+                $event->event_date = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
+                $event->event_start = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
+                $event->event_end = date('Y-m-d h:i:s', strtotime($request->end . ' ' . $request->end_time));
+                $event->floors = $request->floors;
+                $event->status_id = 3;
+                $event->country_id = 2;
+                $event->city_id = $request->city_id;
+                $event->place = $request->address;
+                $event->category_id = $request->category_id;
+                $event->image_id = $event_main_image->id;
+                $event->location_id = $location->id;
+                $event->attaches_id = $event_attaches->id;
+
+                if ($event->save())
+                {
+                    \event(new EventCreatedEvent($event, $request, $event->image_id, $event->location_id));
+                }
+
+                Event::where('id',$event->id)->update(['evqrin'=>GenerateQr::generateQrCode(2,"hemmtk-1,".$event->id)]);
+                Event::where('id',$event->id)->update(['evqrout'=>GenerateQr::generateQrCode(3,"hemmtk-2,".$event->id)]);
+
+                DB::table('total_package_consumption')
+                    ->where('organization_id', Auth::user()->id)
+                    ->decrement('total_events', 1);
+
+                DB::commit();
+
+                return redirect(url('event'))->with('create', 'تم اضافة الفعالية بنجاح')->withInput($request->input());
             }
-
-            DB::beginTransaction();
-
-            if ($uploadedFile = $request->file('image'))
-            {
-                // Save Image
-                $event_main_image = Upload::singleUpload($request,'image','uploads/events/','image','image|mimes:jpeg,jpg,png','App\Models\Image');
+            catch (\Exception $exception){
+                $error = new ErrorClass();
+                $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
+                return redirect()->back()->with('exception', 'خطأ في حفظ البيانات')->withInput($request->input());
             }
-
-
-            // Save Location
-            $location = \App\Models\Location::create(['url' => $request->location]);
-
-            // Save Event
-            $event = new Event();
-            $event->title = $request->title;
-            $event->organization_id = Auth::user()->id;
-            $event->slug = $request->title;
-            $event->description = $request->description;
-            $event->event_date = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
-            $event->event_start = date('Y-m-d h:i:s', strtotime($request->start . ' ' . $request->start_time));
-            $event->event_end = date('Y-m-d h:i:s', strtotime($request->end . ' ' . $request->end_time));
-            $event->floors = $request->floors;
-            $event->status_id = 3;
-            $event->country_id = 2;
-            $event->city_id = $request->city_id;
-            $event->place = $request->address;
-            $event->category_id = $request->category_id;
-            $event->image_id = $event_main_image->id;
-            $event->location_id = $location->id;
-
-            if ($event->save())
-            {
-                \event(new EventCreatedEvent($event, $request, $event->image_id, $event->location_id));
-            }
-
-            Event::where('id',$event->id)->update(['evqrin'=>GenerateQr::generateQrCode(2,"hemmtk-1,".$event->id)]);
-            Event::where('id',$event->id)->update(['evqrout'=>GenerateQr::generateQrCode(3,"hemmtk-2,".$event->id)]);
-
-            DB::commit();
-
-            return redirect(url('event'))->with('create', 'تم اضافة الفعالية بنجاح')->withInput($request->input());
         }
-        catch (\Exception $exception){
-            $error = new ErrorClass();
-            $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
-            return redirect()->back()->with('exception', 'خطأ في حفظ البيانات')->withInput($request->input());
-        }
+        return redirect('/')->with('exception', "يجب الإشتراك اولا في احد الباقات كي تتمكن من انشاء فعالية");
+
     }
 
     /**
@@ -170,11 +198,12 @@ class EventController extends Controller
      */
     public function edit($id)
     {
+        $seasons = Season::all();
         $event =  Event::with('city')->findOrFail($id);
         $cities = City::all()->where('country_id', 2);
         $categories = Category::all();
         $gates_types = GateType::all();
-        return view('dashboard.event.edit', compact('event', 'cities', 'categories', 'gates_types'));
+        return view('dashboard.event.edit', compact('event', 'cities', 'categories', 'gates_types', 'seasons'));
     }
 
     /**
@@ -187,10 +216,11 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         $event =  Event::with('city')->findOrFail($id);
-        /*try{*/
+        try{
             $v = Validator::make($request->all(), [
                 'title'         => 'required',
                 'description'   => 'required',
+                'budget'        => 'required',
                 'floors'        => 'required|int',
                 'address'       => 'required|max:191',
                 'location'      => 'required',
@@ -225,14 +255,15 @@ class EventController extends Controller
 
             // Save Event
             $event->title = $request->title;
+            $event->season_id = $request->season_id;
             $event->organization_id = Auth::user()->id;
             $event->slug = $request->title;
+            $event->budget = $request->budget;
             $event->description = $request->description;
             $event->event_date = date('Y-m-d', strtotime($request->start));
             $event->event_start = date('Y-m-d', strtotime($request->start));
             $event->event_end = date('Y-m-d', strtotime($request->end));
             $event->floors = $request->floors;
-            $event->status_id = 3;
             $event->country_id = 2;
             $event->city_id = $request->city_id;
             $event->place = $request->address;
@@ -258,15 +289,48 @@ class EventController extends Controller
                 }
             }
 
+            $event_finance_totals = DB::table('finance_totals')->where('event_id', $event->id)->count();
+            if ($event_finance_totals == 0)
+            {
+                for ($i = 1; $i<=14; $i++)
+                {
+                    if ($i <= 10)
+                    {
+                        DB::table('finance_totals')->insert([
+                            'category_id' => $i,
+                            'event_id' => $event->id,
+                            'total_expected' => 0,
+                            'total_real_value' => 0,
+                            'type' => 2,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ]);
+                    }
+                    else
+                    {
+                        DB::table('finance_totals')->insert([
+                            'category_id' => $i,
+                            'event_id' => $event->id,
+                            'total_expected' => 0,
+                            'total_real_value' => 0,
+                            'type' => 1,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ]);
+                    }
+                }
+            }
+
+
             DB::commit();
 
             return redirect(url('event'))->with('create', 'تم تعديل الفعالية بنجاح')->withInput($request->input());
-        /*}
+        }
         catch (\Exception $exception){
             $error = new ErrorClass();
             $error->Error_Save(__CLASS__,__FUNCTION__,'=>'.$exception->getMessage().'. line=>'.$exception->getLine(),1);
             return redirect()->back()->with('exception', 'خطأ في حفظ البيانات')->withInput($request->input());
-        }*/
+        }
     }
 
     /**

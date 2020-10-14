@@ -88,9 +88,12 @@
 <script src="{{asset('dashboard/assets/bundles/vendorscripts.bundle.js')}}"></script>
 <script src="{{assetPath('dashboard/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js')}}"></script> <!-- Bootstrap Colorpicker Js -->
 <!-- slimscroll, waves Scripts Plugin Js -->
+<script src="{{assetPath('dashboard/assets/bundles/morrisscripts.bundle.js')}}"></script> <!-- Morris Plugin Js -->
+
 <script src="{{asset('dashboard/assets/bundles/jvectormap.bundle.js')}}"></script>
 <!-- JVectorMap Plugin Js -->
 <script src="{{asset('dashboard/assets/bundles/sparkline.bundle.js')}}"></script>
+<script src="{{assetPath('dashboard/assets/bundles/knob.bundle.js')}}"></script>
 <!-- Sparkline Plugin Js -->
 <script src="{{asset('dashboard/assets/bundles/c3.bundle.js')}}"></script>
 
@@ -106,11 +109,15 @@
 <script src="{{assetPath('dashboard/assets/plugins/momentjs/moment.js')}}"></script> <!-- Moment Plugin Js -->
 <script src="{{assetPath('dashboard/assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js')}}"></script>
 <script src="{{assetPath('dashboard/assets/bundles/mainscripts.bundle.js')}}"></script>
+<script src="{{assetPath('dashboard/assets/js/pages/ecommerce.js')}}"></script>
+<script src="{{assetPath('dashboard/assets/js/pages/charts/jquery-knob.min.js')}}"></script>
 <script src="{{assetPath('dashboard/assets/js/pages/tables/jquery-datatable.js')}}"></script>
 <script src="{{assetPath('dashboard/assets/js/pages/index.js')}}"></script>
 <script src="{{assetPath('dashboard/assets/js/pages/forms/basic-form-elements.js')}}"></script>
+<script src="{{assetPath('dashboard/assets/js/pages/blog/blog.js')}}"></script>
 
 @yield('customizedScript')
+@yield('ajax')
 
 
 

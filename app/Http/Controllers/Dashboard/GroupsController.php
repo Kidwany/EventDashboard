@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\UserDocuments;
 use App\Models\UserGroup;
 use App\Models\UserPaymentInfo;
+use App\Models\Zone;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,11 @@ class GroupsController extends Controller
     public function create($event_id)
     {
         $event = Event::with('city')->findOrFail($event_id);
+        $zones = Zone::with('event')
+            ->where('event_id', $event_id)
+            ->where('is_active', 1)
+            ->get();
+
         $requests = DB::table('event_attend_request')
             ->where('status_id', 5)
             ->where('event_id', $event_id)
@@ -63,27 +69,30 @@ class GroupsController extends Controller
             ->pluck('member_id')->toArray();
 
 
-         $users = User::with('image', 'city')
+        $users = User::with('image', 'city')
             ->orderBy('created_at', 'desc')
-            ->where('role_id', 2)
+            ->whereIn('role_id', [2, 5])
             ->whereIn('id', $requests)
             ->whereIn('id', array_diff($requests, $groups_members))
             ->get();
 
         $colors = Color::all();
 
-        return view('dashboard.groups.create', compact('event', 'users', 'colors'));
+        return view('dashboard.groups.create', compact('event', 'users', 'colors', 'zones'));
     }
+
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Kreait\Firebase\Exception\ApiException
      */
     public function store(Request $request)
     {
         $v = Validator::make($request->all(), [
             'name'         => 'required',
             'color'          => 'required',
+            'zone_id'          => 'required',
             'users.*'        => 'required|int',
         ], [], []);
 
@@ -96,6 +105,7 @@ class GroupsController extends Controller
         $group->color_id = $request->color;
         $group->event_id = $request->event_id;
         $group->name = $request->name;
+        $group->zone_id = $request->zone_id;
         $group->created_by = Auth::user()->id;
         $group->save();
 
@@ -175,6 +185,10 @@ class GroupsController extends Controller
     {
         $group = UserGroup::findOrFail($group_id);
         $event = Event::with('city')->findOrFail($event_id);
+        $zones = Zone::with('event')
+            ->where('event_id', $event_id)
+            ->where('is_active', 1)
+            ->get();
         $requests = DB::table('event_attend_request')
             ->where('status_id', 5)
             ->where('event_id', $event_id)
@@ -215,20 +229,22 @@ class GroupsController extends Controller
 
         $colors = Color::all();
 
-        return view('dashboard.groups.edit', compact('event', 'users', 'colors', 'group', 'group_members', 'managers'));
+        return view('dashboard.groups.edit', compact('zones', 'event', 'users', 'colors', 'group', 'group_members', 'managers'));
     }
 
 
-
     /**
+     * @param $id
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Kreait\Firebase\Exception\ApiException
      */
     public function update($id, Request $request)
     {
         $group = UserGroup::where('id',$id)->firstOrFail();
         $v = Validator::make($request->all(), [
             'name'         => 'required',
+            'zone_id'         => 'required',
             'color'          => 'required',
             'users.*'        => 'required|int',
         ], [], []);
@@ -240,6 +256,7 @@ class GroupsController extends Controller
 
         $group->color_id = $request->color;
         $group->name = $request->name;
+        $group->zone_id = $request->zone_id;
         $group->created_by = Auth::user()->id;
         $group->save();
 

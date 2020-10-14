@@ -76,6 +76,20 @@
                             </div>
                             <div class="body">
                                 <div class="row">
+
+                                    <div class="col-lg-6 col-md-6">
+                                        <label> المنطقة</label>
+                                        <select name="zone_id" class="form-control show-tick ms select2"  data-placeholder="اختر المنطقة">
+                                            @if($zones)
+                                                @foreach($zones as $zone)
+                                                    <option value="{{$zone->id}}" {{$group->zone_id == $zone->id ? 'selected' : ''}}>
+                                                        {{$zone->name}}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+
                                     <div class="col-lg-6 col-md-12 col-sm-3">
                                         <label for="email_address">اسم المجموعة</label>
                                         <div class="form-group">

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -11,6 +12,10 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @property integer $id
  * @property integer $image_id
+ * @property integer $parent_id
+ * @property integer $created_by
+ * @property integer $company_id
+ * @property integer $category_id
  * @property integer $phone_id
  * @property int $role_id
  * @property string $name
@@ -183,10 +188,51 @@ class User extends Authenticatable
         return $this->belongsTo(Nationality::class, 'nationality_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function privileges()
     {
         return $this->belongsToMany(Privileges::class, 'user_privilege', 'user_id', 'privilege_id')
             ->withTimestamps();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(CompanyCategories::class, 'category_id')->withDefault();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function member()
+    {
+        return $this->hasOne(UserGroupMembers::class, 'member_id')->with('group')->withDefault();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function break()
+    {
+        return $this->hasOne(UserRest::class, 'user_id')->withDefault();
+    }
+
+    public function is_viewed()
+    {
+        return $this
+            ->hasOne(ProfileViews::class, 'sp_id')
+            ->where('company_id', Auth::user()->id);
+    }
 }

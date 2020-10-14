@@ -4,6 +4,11 @@
 @endsection
 
 @section('customizedScript')
+    <script>
+        function showAcceptForm() {
+            $('form#accept').css({ 'display' : 'block'});
+        }
+    </script>
 @endsection
 
 @section('content')
@@ -133,6 +138,7 @@
 
         <div class="container-fluid elm" id="print">
             <div class="row clearfix">
+                @include('dashboard.layouts.messages')
                 <div class="col-lg-4 col-md-12">
                     <div class="card mcard_3">
                         <div class="body">
@@ -144,13 +150,30 @@
                             </a>
                             <h4 class="m-t-10">{{$user->fname . ' ' . $user->mname . ' ' . $user->lname}}</h4>
                             <div class="row">
-                                <div class="col-12">
-                                    {{--<form action="{{route('user.update', 5)}}" method="post">
-                                        @csrf
-                                        @method('patch')
-                                        <button type="submit" class="btn btn-danger">تعطيل الحساب</button>
-                                    </form>--}}
-                                </div>
+                                @if(count($application) > 0)
+                                    <div class="col-12 d-flex justify-content-center">
+                                        <button type="button" onclick="showAcceptForm()" class="btn btn-success">قبول</button>
+                                        <form action="{{url('applicants/reject/' .  request('application_id') )}}" method="post">
+                                            @csrf
+                                            @method('get')
+                                            <button type="submit" class="btn btn-danger">رفض</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-12">
+                                        <form id="accept" style="display: none" method="post" action="{{url('applicants/accept/' . request('application_id') . '/user-page')}}" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="col-lg-12 col-md-12 col-sm-3">
+                                                <label for="email_address">قم برفع العقد لإرساله للمنظم</label>
+                                                <div class="form-group">
+                                                    <input required type="file" name="contract" id="email_address" class="form-control" placeholder="">
+                                                    <span class="text-muted">قم برفع ملف العقد الخاص بالمنظم حتى نتمكن من توثيق العقد
+                                            </span>
+                                                </div>
+                                                <button type="submit" class="btn btn-success">ارسال العقد</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                @endif
                                 <div class="col-12">
                                     <p class="text-muted">
                                         @if($user->serviceProviderJobs->count())
@@ -323,11 +346,11 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <p class="text-muted">البنك : </p>
-                                    <h3>{{$user_payment->bank}}</h3>
+                                    <h3>{{$user_payment ? $user_payment->bank : ""}}</h3>
                                 </div>
                                 <div class="col-lg-6">
                                     <p class="text-muted">رقم الأيبان : </p>
-                                    <h3>{{$user_payment->ipan_no}}</h3>
+                                    <h3>{{$user_payment ? $user_payment->ipan_no : ""}}</h3>
                                 </div>
                             </div>
 

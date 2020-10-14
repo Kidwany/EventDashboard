@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property integer $id
+ * @property integer $season_id
  * @property integer $organization_id
  * @property integer $sp_id
  * @property integer $image_id
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $floors
  * @property integer $status_id
  * @property string $title
+ * @property string $budget
  * @property string $slug
  * @property string $description
  * @property string $place
