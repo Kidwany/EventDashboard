@@ -20,9 +20,15 @@ Route::get('/', function () {
 
 });
 Route::get('dev', function () {
-
-    $evenTitle=Event::where('id',65)->select('title')->firstOrFail();
-   return $evenTitle->title;
+   //1 -> in->eventid , 2->out->eventid , 3-> floorid->eventid,4->gatesid->eventid
+    //5 tools
+     //two index
+     //first element => type
+     //second element eventid
+     //third index
+     //first elment => type
+     //second element => eventid
+     //third element => flooor or gates
 });
 Route::group(['namespace' => 'Dashboard', 'middleware' => 'auth'], function ()
 {

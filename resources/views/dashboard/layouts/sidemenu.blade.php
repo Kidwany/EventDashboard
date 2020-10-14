@@ -25,10 +25,10 @@
                 </ul>
             </li>
             <li>
-                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts"></i><span>المستخدمين </span></a>
+                <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts"></i><span>مديرين التطبيق </span></a>
                 <ul class="ml-menu">
-                    <li><a href="{{adminUrl('admin')}}">شاهد المستخدمين</a></li>
-                    <li><a href="{{adminUrl('admin/create')}}">مستخدم جديد</a></li>
+                    <li><a href="{{adminUrl('admin')}}">شاهد المديرين</a></li>
+                    <li><a href="{{adminUrl('admin/create')}}">مدير جديد</a></li>
                 </ul>
             </li>
             {{--<li>

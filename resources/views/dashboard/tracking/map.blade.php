@@ -50,7 +50,7 @@
         map = new google.maps.Map(document.getElementById("map"), {
             center: myLatLng,
             zoom: 17,
-            mapTypeId: 'satellite'
+            //mapTypeId: 'satellite'
         });
 
 
@@ -92,8 +92,6 @@
     let eventId = {{$event->id}};
     let groupId = "Group_20";
     let dbfireref = "Tracking/Event_"+eventId+"/";
-
-
         firebase.database().ref(dbfireref).on('value', function (snapshot) {
         var value = snapshot.val();
             console.log("this snapshot",value);
@@ -104,36 +102,39 @@
             if (value) {
                 $.each(value, function (key, subvalue) {
                     console.log("this value another",subvalue);
-                    var key =  new google.maps.Marker({
+                    var userkey =  new google.maps.Marker({
                         position: {
                             lat:subvalue['lat'],
                             lng:subvalue['lang']
                         },
-                        title: key,
-                        label: {
-                            color: subvalue['color'],
-                            fontWeight: 'bold',
-                            text: subvalue['name'],
-                        },
+                        title: subvalue['name'],
+                        // label: {
+                        //     color: subvalue['color'],
+                        //     fontWeight: 'bold',
+                        //     text: subvalue['name'],
+                        // },
                         icon: {
-                            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                            path: google.maps.SymbolPath.CIRCLE,
                             strokeColor: subvalue['color'],
                             scale: 4
                         },
                         map:map
                     });
-                    markers.push(key);
+                    markers.push(userkey);
+                    // google.maps.event.addListener(userkey, 'click', function() {
+                    //     //$('#myModal').modal('show');
+                    //     alert(key);
+                    // });
                 });
 
                 console.log("this value",value);
-
-
+                // google.maps.event.addListener(marker_1, 'click', function() {
+                //     $('#myModal').modal('show');
+                // });
                 // index.setPosition({
                 //     lat: value['lat'],
                 //     lng: value['lang']
                 // });
-
-
                 //index.setMap(map);
             }
 

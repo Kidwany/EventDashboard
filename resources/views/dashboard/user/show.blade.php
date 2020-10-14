@@ -16,9 +16,9 @@
 				box-sizing: border-box;
 				direction: rtl;
 			}
-		 
+
 			.id-wrapper {
-			
+
 				background-color: #f7f8fa;
 				border: 1px solid rgba(0, 0, 0, 0.1);
 				border-radius: 4px;
@@ -194,7 +194,7 @@
                             <p>{{$user->lang ? ($user->lang == 'ar' ? 'العربية' : 'الإنجليزية') : 'العربية'}}</p>
                             <hr>
                             <small class="text-muted">تم التسجيل في: </small>
-                            <p>{{$user->created_at->format('d M Y')}}  {{$user->created_at->format('h:i:s')}}</p>
+                            <p>{{$user->created_at->format('Y-m-d')}}  {{$user->created_at->format('h:i')}}</p>
                         </div>
                     </div>
                     <div class="card">
@@ -377,8 +377,8 @@
                             <h2><strong>البطاقه التعريفيه</strong> </h2>
                         </div>
                     </div>
-                    
-          
+
+
 		<div class="id-wrapper">
 			<div class="card-title">بطاقه تعريفيه</div>
 
@@ -416,7 +416,7 @@
 				</div>
 			</div>
 		</div>
-                         
+
                 </div>
             </div>
         </div>

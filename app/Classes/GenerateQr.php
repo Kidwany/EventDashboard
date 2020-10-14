@@ -6,9 +6,9 @@ namespace App\Classes;
 
 
 class GenerateQr
-{ 
-    //type = 1-> user ,2->eventin , 3->eventout, 4->floor, 5->gates
-      
+{
+    //type = 1-> user ,2->eventin , 3->eventout, 4->floor, 5->gates ,6->tools
+
     public static function generateQrCode($type,$data){
         $Qr = new \SimpleSoftwareIO\QrCode\Generator();
         switch ($type){

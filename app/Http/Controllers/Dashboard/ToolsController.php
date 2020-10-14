@@ -59,7 +59,7 @@ class ToolsController extends Controller
         $tool->event_id = $request->event_id;
         $tool->save();
 
-        $tool->barcode = GenerateQr::generateQrCode(6,"hemmtk-4,".$tool->event_id.",".$tool->id);
+        $tool->barcode = GenerateQr::generateQrCode(6,"hemmtk-5,".$tool->event_id.",".$tool->id);
         $tool->save();
         //return EventGates::where('id',$tool->id)->update(['barcode'=>GenerateQr::generateQrCode(6,"hemmtk-4,".$tool->event_id.",".$tool->id)]);
 

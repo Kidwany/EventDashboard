@@ -91,7 +91,7 @@
                             <p>{{$user->lang ? ($user->lang == 'ar' ? 'العربية' : 'الإنجليزية') : 'العربية'}}</p>
                             <hr>
                             <small class="text-muted">تم التسجيل في: </small>
-                            <p>{{$user->created_at->format('Y-m-d')}} </p>
+                            <p>{{$user->created_at->format('Y-m-d')}}  {{$user->created_at->format('h:i')}} </p>
                         </div>
                     </div>
                     <div class="card">
