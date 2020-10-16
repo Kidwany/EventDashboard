@@ -37,7 +37,6 @@
                     <div class="inbox left" id="email-nav">
                         <div class="mail-side">
                             <ul class="nav">
-
                                 <li class="active"><a href="{{adminUrl('applicants/' . $event->id)}}"><i class="zmdi zmdi-inbox"></i>الطلبات<span class="badge badge-primary">{{$applications}}</span></a></li>
                                 <li><a href="{{adminUrl('zones/' . $event->id)}}"><i class="zmdi zmdi-map"></i>المناطق</a></li>
                                 <li><a href="{{adminUrl('groups/' . $event->id)}}"><i class="zmdi zmdi-group-work"></i>المجموعات</a></li>
@@ -55,7 +54,6 @@
                                 <li><a href="{{adminUrl('break/' . $event->id)}}"><i class="zmdi zmdi-local-cafe"></i>الإستراحة</a></li>
                             </ul>
                         </div>
-
                         <div class="card">
                             <div class="header">
                                 <h2><strong>الموقع</strong></h2>

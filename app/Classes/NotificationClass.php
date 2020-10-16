@@ -2,6 +2,10 @@
 
 
 namespace App\Classes;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\URL;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 use sngrl\PhpFirebaseCloudMessaging\Client;
 use sngrl\PhpFirebaseCloudMessaging\Message;
 use sngrl\PhpFirebaseCloudMessaging\Recipient\Device;
@@ -59,6 +63,24 @@ class NotificationClass
         $notification->consultation_id = $consultation_id;
         $notification->data = $data;
         $notification->save();
+        $serviceAccount = ServiceAccount::fromJsonFile(__DIR__ . '/hemmtk-firebase-adminsdk-gufet-035d61ef62.json');
+        $firebase = (new Factory)
+            ->withServiceAccount($serviceAccount)
+            ->withDatabaseUri('https://hemmtk.firebaseio.com')
+            ->create();
+        $database = $firebase->getDatabase();
+        $database
+            ->getReference('Notifications/'.$notifiable_id)
+            ->push([
+                'title' => $title,
+                'body' => 'لديك مهمه جديده من فاعليه '.$data ,
+                'createdDate' => Carbon::now(),
+                'icon'=>URL::to('/dashboard/assets/images/icon/tasks.bd1b6b37.svg'),
+                'is_read'=>'false',
+                'type'=>$type,
+            ]);
+
+
 
         return $notification;
     }
